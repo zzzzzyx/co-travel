@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="warn" strict="true" name="LogConfig">
+    <Properties>
+        <Property name="filepath">log4j2</Property>
+    </Properties>
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout>
+                <Pattern>[ %d{yyyy-MM-dd HH:mm:ss} | %level{length=5} | %-20class{1} | %-15M | %-2L ] %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+        <RollingFile name="RollingFile" fileName="log4j2/logs/web.log"
+                     filePattern="log4j2/logs/$${date:yyyy-MM-dd}/%d{yyyy-MM-dd HH}-%i.log">
+            <!-- pattern = "[ 时间 | 日志级别 | 类名 | 方法名 | 行数 ] - 日志信息" -->
+            <PatternLayout
+                    pattern="[ %d{yyyy-MM-dd HH:mm:ss} | %level | %-20class{1} | %-10M | %-2L ] %msg%n" />
+            <Policies>
+                <CronTriggeringPolicy schedule="0 * */1 * * ?" evaluateOnStartup="true"/>
+                <!-- 一个日志文件的最大大小 -->
+                <SizeBasedTriggeringPolicy size="20KB" />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="fileLogger" level="debug" additivity="false">
+            <appender-ref ref="RollingFile" />
+            <AppenderRef ref="STDOUT"/>
+        </Logger>
+
+        <Root level="INFO">
+            <appender-ref ref="RollingFile" />
+            <AppenderRef ref="STDOUT"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

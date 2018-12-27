@@ -1,0 +1,27 @@
+co-travel/target/
+travel-backend/target/
+travel-backend/log4j2/
+travel-backend/!.mvn/wrapper/maven-wrapper.jar
+
+### STS ###
+travel-backend/.apt_generated
+travel-backend/.classpath
+travel-backend/.factorypath
+travel-backend/.project
+travel-backend/.settings
+travel-backend/.springBeans
+travel-backend/.sts4-cache
+
+### IntelliJ IDEA ###
+travel-backend/.idea
+travel-backend/*.iws
+travel-backend/*.iml
+travel-backend/*.ipr
+
+### NetBeans ###
+travel-backend/nbproject/private/
+travel-backend/build/
+travel-backend/nbbuild/
+travel-backend/dist/
+travel-backend/nbdist/
+travel-backend/.nb-gradle/

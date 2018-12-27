@@ -1,0 +1,21 @@
+spring:
+  aop:
+    proxy-target-class: true
+    auto: true
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://172.19.240.64:3306/travel?characterEncoding=UTF-8&useUnicode=true
+    username: travel-dev
+    password: 123456
+  redis:
+    host: 172.19.240.64
+    port: 6379
+    password: travel-dev-c7we89c7w98e7vw987vwe9v
+    poolMaxTotal: 1000
+    poolMaxIdle: 500
+    poolMaxWait: 500
+
+  session:
+    store-type: redis
+logging:
+  config: classpath:log4j2.xml
