@@ -54,7 +54,7 @@
 	owner.createState = function(userInfo, callback) {
 		var state = owner.getState();
 
-		state.userID = userInfo.userID;
+		state.userId = userInfo.userId;
 		state.userName = userInfo.userName;
 		state.email = userInfo.email;
 		state.sex = userInfo.sex;

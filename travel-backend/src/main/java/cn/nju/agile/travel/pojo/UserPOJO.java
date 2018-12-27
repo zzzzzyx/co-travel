@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class UserPOJO implements Serializable {
     private static final long serialVersionUID = 1279872207803310961L;
     
-    private String userID;
+    private String userId;
     private String userName;
     private String email;
     private String sex;
@@ -13,8 +13,8 @@ public class UserPOJO implements Serializable {
     private String avatarURL;
     private String token;
     
-    public UserPOJO(String userID, String userName, String email, String sex, String birthday, String avatarURL, String token) {
-        this.userID = userID;
+    public UserPOJO(String userId, String userName, String email, String sex, String birthday, String avatarURL, String token) {
+        this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.sex = sex;
@@ -31,12 +31,12 @@ public class UserPOJO implements Serializable {
         this.token = token;
     }
     
-    public String getUserID() {
-        return userID;
+    public String getuserId() {
+        return userId;
     }
     
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public void setuserId(String userId) {
+        this.userId = userId;
     }
     
     public String getUserName() {
