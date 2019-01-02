@@ -38,12 +38,12 @@ public class UserController {
         Result result;
         if (user != null) {
             try {
-                user.setToken(tokenService.getToken(user.getUserID()));
+                user.setToken(tokenService.getToken(user.getuserId()));
                 result = new Result(StatusCode.SUCCESS, user);
             } catch (Exception e) {
                 e.printStackTrace();
                 logger.getLogger().
-                        error("UserID {} occurred error when tried to login", user.getUserID());
+                        error("UserID {} occurred error when tried to login", user.getuserId());
                 logger.getLogger().
                         error(e.getMessage());
                 result = new Result(StatusCode.NEED_LOGIN, "");
