@@ -4,6 +4,7 @@ package cn.nju.agile.travel.controller;
 import cn.nju.agile.travel.config.interceptor.Secured;
 import cn.nju.agile.travel.consts.StatusCode;
 import cn.nju.agile.travel.consts.UserConstant;
+import cn.nju.agile.travel.entity.User;
 import cn.nju.agile.travel.pojo.Result;
 import cn.nju.agile.travel.pojo.UserPOJO;
 import cn.nju.agile.travel.service.LogService;
@@ -13,6 +14,7 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,5 +69,14 @@ public class UserController {
             result = new Result(StatusCode.USER_NOT_EXIST, "");
         }
         return result.toJsonString();
+    }
+
+    // 修改个人基本信息,需要一个修改用户接口，传给你id
+    @RequestMapping(value="/getByUserName")
+    @ResponseBody
+    public User getByUserName(HttpServletRequest request){
+        String userName=request.getParameter("userName");
+
+        return userService.getByUserName(userName);
     }
 }
