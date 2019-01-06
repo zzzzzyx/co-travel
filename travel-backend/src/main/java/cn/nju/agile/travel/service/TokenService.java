@@ -23,7 +23,7 @@ public class TokenService {
     }
     
     
-    public boolean checkToken(String token,String userId) throws Exception {
+    public boolean checkToken(String token,String userId) {
         String currentToken = redisService.get(UserKey.userAccessKey, userId, String.class);
         if (StringUtils.isEmpty(currentToken)) {
             return false;
