@@ -1,5 +1,7 @@
 package cn.nju.agile.travel.pojo;
 
+import cn.nju.agile.travel.entity.User;
+
 import java.io.Serializable;
 
 public class UserPOJO implements Serializable {
@@ -7,75 +9,58 @@ public class UserPOJO implements Serializable {
     
     private String userId;
     private String userName;
-    private String email;
-    private String sex;
-    private String birthday;
-    private String avatarURL;
     private String token;
-    
-    public UserPOJO(String userId, String userName, String email, String sex, String birthday, String avatarURL, String token) {
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
-        this.sex = sex;
-        this.birthday = birthday;
-        this.avatarURL = avatarURL;
-        this.token = token;
+    private String sex;
+    private String university;
+
+    public UserPOJO(User user) {
+        this.userId = user.getId();
+        this.userName = user.getUserName();
+        this.sex = user.getSex();
+        this.university = user.getUniversity();
     }
-    
-    public String getToken() {
-        return token;
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
-    
-    public void setToken(String token) {
-        this.token = token;
-    }
-    
-    public String getuserId() {
+
+    public String getUserId() {
         return userId;
     }
-    
-    public void setuserId(String userId) {
+
+    public void setUserId(String userId) {
         this.userId = userId;
     }
-    
+
     public String getUserName() {
         return userName;
     }
-    
+
     public void setUserName(String userName) {
         this.userName = userName;
     }
-    
-    public String getEmail() {
-        return email;
+
+    public String getToken() {
+        return token;
     }
-    
-    public void setEmail(String email) {
-        this.email = email;
+
+    public void setToken(String token) {
+        this.token = token;
     }
-    
+
     public String getSex() {
         return sex;
     }
-    
+
     public void setSex(String sex) {
         this.sex = sex;
     }
-    
-    public String getBirthday() {
-        return birthday;
+
+    public String getUniversity() {
+        return university;
     }
-    
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-    
-    public String getAvatarURL() {
-        return avatarURL;
-    }
-    
-    public void setAvatarURL(String avatarURL) {
-        this.avatarURL = avatarURL;
+
+    public void setUniversity(String university) {
+        this.university = university;
     }
 }
