@@ -1,101 +1,104 @@
 package cn.nju.agile.travel.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.util.Date;
 
+import javax.persistence.*;
+
+
 @Entity
-public class Activity {
+public class Activity{
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	private String activityName;
+	private Date startTime;
+	private Date endTime;
+	private String category;
+	private String location;
+	private String detail;
+	private Long organizerId;
+	private Date registrationDeadline;
+	private String activityStatus;
+	
+	public Long getId() {
+		return id;
+	}
 
-    @Id
-    private int id;
-    private String activityName;
-    private Date startTime;
-    private Date endTime;
-    private String category;
-    private String location;
-    private String detail;
-    private int organizerId;
-    private Date registrationDeadline;
-    private String activityStatus;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public String getActivityName() {
+		return activityName;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setActivityName(String activityName) {
+		this.activityName = activityName;
+	}
 
-    public String getActivityName() {
-        return activityName;
-    }
+	public Date getStartTime() {
+		return startTime;
+	}
 
-    public void setActivityName(String activityName) {
-        this.activityName = activityName;
-    }
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
-    public Date getStartTime() {
-        return startTime;
-    }
+	public Date getEndTime() {
+		return endTime;
+	}
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
 
-    public Date getEndTime() {
-        return endTime;
-    }
+	public String getCategory() {
+		return category;
+	}
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
-    public String getCategory() {
-        return category;
-    }
+	public String getLocation() {
+		return location;
+	}
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+	public void setLocation(String location) {
+		this.location = location;
+	}
 
-    public String getLocation() {
-        return location;
-    }
+	public String getDetail() {
+		return detail;
+	}
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
 
-    public String getDetail() {
-        return detail;
-    }
+	public Long getOrganizerId() {
+		return organizerId;
+	}
 
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
+	public void setOrganizerId(Long organizerId) {
+		this.organizerId = organizerId;
+	}
 
-    public int getOrganizerId() {
-        return organizerId;
-    }
+	public Date getRegistrationDeadline() {
+		return registrationDeadline;
+	}
 
-    public void setOrganizerId(int organizerId) {
-        this.organizerId = organizerId;
-    }
+	public void setRegistrationDeadline(Date registrationDeadline) {
+		this.registrationDeadline = registrationDeadline;
+	}
 
-    public Date getRegistrationDeadline() {
-        return registrationDeadline;
-    }
+	public String getActivityStatus() {
+		return activityStatus;
+	}
 
-    public void setRegistrationDeadline(Date registrationDeadline) {
-        this.registrationDeadline = registrationDeadline;
-    }
-
-    public String getActivityStatus() {
-        return activityStatus;
-    }
-
-    public void setActivityStatus(String activityStatus) {
-        this.activityStatus = activityStatus;
-    }
+	public void setActivityStatus(String activityStatus) {
+		this.activityStatus = activityStatus;
+	}
+	
 }

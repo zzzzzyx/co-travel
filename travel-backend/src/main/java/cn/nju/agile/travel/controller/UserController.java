@@ -62,7 +62,7 @@ public class UserController {
     @Secured
     @GetMapping("/test")
     public String getTest(HttpSession session) {
-        return (String) session.getAttribute(UserConstant.Us);
+        return (String) session.getAttribute(UserConstant.USER_NAME);
     }
 
     // 修改个人基本信息,需要一个修改用户接口，传给你id
