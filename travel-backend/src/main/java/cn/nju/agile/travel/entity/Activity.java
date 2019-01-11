@@ -101,6 +101,4 @@ public class Activity{
 		this.activityStatus = activityStatus;
 	}
 	
-	
-
 }
