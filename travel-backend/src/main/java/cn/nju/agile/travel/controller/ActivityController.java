@@ -1,10 +1,15 @@
 package cn.nju.agile.travel.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import cn.nju.agile.travel.consts.UserConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,6 +56,24 @@ public class ActivityController {
         String activityName=request.getParameter("activityName");
 
         return activityService.getActivityByActivityName(activityName);
+    }
+
+    @PostMapping(value="/save")
+    public void saveActivity(HttpSession session, HttpServletRequest request) throws ParseException {
+        String activityName = request.getHeader("activityName");
+        String startTime = request.getHeader("startTime");
+        String endTime = request.getHeader("endTime");
+        String category = request.getHeader("category");
+        String location = request.getHeader("location");
+        String detail = request.getHeader("detail");
+        String organizerId = (String)session.getAttribute(UserConstant.USER_ID);
+        String registrationDeadline = request.getHeader("registrationDeadline");
+        String activityStatus = "init";
+
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
+        System.out.println(newActivity);
+        activityService.save(newActivity);
     }
 
 }

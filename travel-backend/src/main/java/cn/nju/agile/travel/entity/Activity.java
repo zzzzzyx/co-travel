@@ -20,7 +20,37 @@ public class Activity{
 	private Long organizerId;
 	private Date registrationDeadline;
 	private String activityStatus;
-	
+
+	public Activity() {
+	}
+
+	public Activity(String activityName, Date startTime, Date endTime, String category, String location, String detail, Long organizerId, Date registrationDeadline, String activityStatus) {
+		this.activityName = activityName;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.category = category;
+		this.location = location;
+		this.detail = detail;
+		this.organizerId = organizerId;
+		this.registrationDeadline = registrationDeadline;
+		this.activityStatus = activityStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "Activity{" +
+				"activityName='" + activityName + '\'' +
+				", startTime=" + startTime +
+				", endTime=" + endTime +
+				", category='" + category + '\'' +
+				", location='" + location + '\'' +
+				", detail='" + detail + '\'' +
+				", organizerId=" + organizerId +
+				", registrationDeadline=" + registrationDeadline +
+				", activityStatus='" + activityStatus + '\'' +
+				'}';
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -22,4 +22,7 @@ public class ActivityService {
 		
 	}
 
+    public void save(Activity newActivity) {
+		activityRepository.save(newActivity);
+    }
 }
