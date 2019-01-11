@@ -1,24 +1,27 @@
 package cn.nju.agile.travel.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class User {
-
-    @Id
-    private String userId;
+public class User{
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     private String userName;
-    private String password;
+    private String pwd;
     private String sex;
     private String university;
 
-    public String getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUserName() {
@@ -29,12 +32,12 @@ public class User {
         this.userName = userName;
     }
 
-    public String getPassword() {
-        return password;
+    public String getPwd() {
+        return pwd;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setPwd(String pwd) {
+        this.pwd = pwd;
     }
 
     public String getSex() {
