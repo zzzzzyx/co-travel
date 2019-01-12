@@ -62,7 +62,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a href='main.html' class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
 			<h1 class="mui-title">创建活动</h1>
 		</header>
 		<div class="mui-content">
@@ -116,6 +116,7 @@
 				});
 				$.plusReady(function() {
 					$.back = mui.back;
+					
 					//检查 "登录状态/锁屏状态" 结束
 					var loginButton = doc.getElementById('login');
 					var activityNameBox = doc.getElementById('activityName');
