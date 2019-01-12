@@ -1,6 +1,6 @@
 (function($, owner) {
-	//var HOST = "http://172.19.240.64:8080";
-	var HOST = "http://localhost:8080";
+	var HOST = "http://172.19.240.64:8080";
+	// var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
 	var SAVE_ACTIVITY = "/user/save";
 
@@ -54,6 +54,9 @@
 				result = JSON.parse(data || {});
 				console.log(result);
 				console.log(result.data);
+				
+				
+				
 				if (result.statusCode.code == 200) {
 					return owner.createState(result.data, callback);
 				} else {
@@ -75,7 +78,7 @@
 		// 		}
 	};
 
-	owner.createState = function(userInfo,loginInfo, callback) {
+	owner.createState = function(userInfo, callback) {
 		var state = owner.getState();
 
 		state.userId = userInfo.userId;
