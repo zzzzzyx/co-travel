@@ -1,11 +1,13 @@
 package cn.nju.agile.travel.controller;
 
+import cn.nju.agile.travel.config.interceptor.Secured;
 import cn.nju.agile.travel.consts.StatusCode;
 import cn.nju.agile.travel.consts.UserConstant;
 import cn.nju.agile.travel.entity.User;
 import cn.nju.agile.travel.pojo.Result;
 import cn.nju.agile.travel.pojo.UserPOJO;
 import cn.nju.agile.travel.service.LogService;
+import cn.nju.agile.travel.service.TokenService;
 import cn.nju.agile.travel.service.UserService;
 import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping(value = "/user")
@@ -25,22 +26,18 @@ public class UserController {
     private UserService userService;
 
     @Autowired
-    private StringRedisTemplate redisTemplate;
+    private TokenService tokenService;
 
     @PostMapping("/login")
-    public String login(HttpServletRequest request, HttpSession session) {
+    public String login(HttpServletRequest request) {
         String userName = request.getParameter(UserConstant.USER_NAME);
         String password = request.getParameter(UserConstant.PASS_WORD);
-        
         User user = userService.getUserByUsernameAndPassword(userName, password);
         Result result;
         
         if (user != null) {
-            UserPOJO return_user = new UserPOJO(user);
-
-            session.setAttribute(UserConstant.USER_ID, return_user.getUserId());
-            session.setAttribute(UserConstant.USER_NAME, return_user.getUserName());
-            redisTemplate.opsForValue().set(UserConstant.USER_ID + return_user.getUserId(), session.getId());
+            UserPOJO return_user = new UserPOJO(user,tokenService.generateToken(userName));
+            tokenService.save(return_user.getToken(),return_user);
 
             result = new Result(StatusCode.SUCCESS, return_user);
             logger.getLogger()
@@ -77,15 +74,13 @@ public class UserController {
         }
         return result.toJsonString();
     }
-    
+
+    @Secured
     @GetMapping(value = "/get")
     @ResponseBody
-    public User get(HttpSession session){
-        System.out.println(JSON.toJSONString(session));
-        System.out.println(JSON.toJSONString(session.getAttributeNames()));
-        Object userId = session.getAttribute(UserConstant.USER_ID);
-        System.out.println((long)userId);
-        return userService.getUserById((long)userId);
+    public UserPOJO get(HttpServletRequest request){
+        // 通过tokenService和token可以获取当前用户的信息
+        return tokenService.getUserByToken(request.getHeader(UserConstant.USER_TOKEN));
     }
     
     // 修改个人基本信息,需要一个修改用户接口，传给你id

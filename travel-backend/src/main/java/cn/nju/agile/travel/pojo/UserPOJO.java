@@ -10,13 +10,33 @@ public class UserPOJO implements Serializable {
     private long userId;
     private String userName;
     private String sex;
+    private String token;
+
+
     private String university;
 
-    public UserPOJO(User user) {
+    public UserPOJO(User user, String token) {
         this.userId = user.getId();
         this.userName = user.getUserName();
         this.sex = user.getSex();
         this.university = user.getUniversity();
+        this.token = token;
+    }
+
+    public UserPOJO(long userId, String userName, String sex, String token, String university) {
+        this.userId = userId;
+        this.userName = userName;
+        this.sex = sex;
+        this.token = token;
+        this.university = university;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public static long getSerialVersionUID() {
@@ -53,5 +73,16 @@ public class UserPOJO implements Serializable {
 
     public void setUniversity(String university) {
         this.university = university;
+    }
+
+    @Override
+    public String toString() {
+        return "UserPOJO{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                ", sex='" + sex + '\'' +
+                ", token='" + token + '\'' +
+                ", university='" + university + '\'' +
+                '}';
     }
 }
