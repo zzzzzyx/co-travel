@@ -31,7 +31,6 @@ public class UserController {
     @Autowired
     private StringRedisTemplate redisTemplate;
 
-
     @PostMapping("/login")
     public String login(HttpServletRequest request, HttpSession session) {
         String userName = request.getHeader(UserConstant.USER_NAME);

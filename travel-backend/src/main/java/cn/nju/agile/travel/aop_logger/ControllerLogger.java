@@ -1,6 +1,7 @@
 package cn.nju.agile.travel.aop_logger;
 
 import cn.nju.agile.travel.service.LogService;
+import com.alibaba.fastjson.JSON;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -39,9 +40,9 @@ public class ControllerLogger {
     }
     
     @AfterReturning(returning = "result", pointcut = "ControllerLog()")
-    public void doAfterReturning(MysqlxDatatypes.Object result) {
+    public void doAfterReturning(Object result) {
         logService.getLogger()
-                .info("Response: {}", result);
+                .info("Response: {}", result.toString());
     }
     
 }
