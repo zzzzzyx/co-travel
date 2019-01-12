@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-row span{
+				font-family: 'Helvetica Neue',Helvetica,sans-serif;
+				line-height: 1.1;
+				float: left;
+				width: 60%;
+				padding: 11px 15px;
+			}
+			.mui-content-padded button{
+				float: none; 
+				width: 120px; 
+				margin: 0 auto; 
+				padding: 10px 0; 
+				display: none;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
+			<h1 class="mui-title">活动详情</h1>
+		</header>
+		<div class="mui-content">
+			<form id='login-form' class="mui-input-group">
+				<div class="mui-input-row">
+					<label>活动名称</label>
+					<span id="activity_name"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>组织者</label>
+					<span id="activity_organizer"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>开始时间</label>
+					<span id="activity_start_time"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>结束时间</label>
+					<span id="activity_end_time"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>报名截止</label>
+					<span id="activity_registration_deadline"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>状态</label>
+					<span id="activity_status"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>分类</label>
+					<span id="activity_category"></span>
+				</div>
+				<div class="mui-input-row">
+					<label>地点</label>
+					<span id="activity_location"></span>
+				</div>
+				<div class="mui-input-row" style="height: 100%;">
+					<label>活动内容</label>
+					<span id="activity_detail"></span>
+				</div>
+				
+			</form>
+			<div class="mui-content-padded" style="margin: 20px;">
+				<button id="participate_activity" class="mui-btn mui-btn-block mui-btn-primary">参加活动</button>
+				<button id="exit_activity" class="mui-btn mui-btn-block mui-btn-primary">退出活动</button>
+				<button id="cancel_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: left; margin-left: 15px; margin-bottom: 20px;">取消活动</button>
+				<button id="finish_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: right; margin-right: 15px; margin-bottom: 20px;">结束活动</button>
+			</div>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.enterfocus.js"></script>
+	<script src="js/app.js"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.plusReady(function() {
+				
+				server_url="http://192.168.137.1:8080";
+				
+				// 测试用的user_id
+				user_id=1003;
+				
+				activity_name=doc.getElementById("activity_name");
+				activity_organizer=doc.getElementById("activity_organizer");
+				activity_start_time=doc.getElementById("activity_start_time");
+				activity_end_time=doc.getElementById("activity_end_time");
+				activity_registration_deadline=doc.getElementById("activity_registration_deadline");
+				activity_status=doc.getElementById("activity_status");
+				activity_category=doc.getElementById("activity_category");
+				activity_location=doc.getElementById("activity_location");
+				activity_detail=doc.getElementById("activity_detail");
+				
+				// 四种按钮,但只有"参与活动"按钮被实现
+				participate_activity=doc.getElementById("participate_activity");
+				participate_activity.addEventListener('tap', function(event) {
+					$.ajax(server_url+'/participate/addParticipate',{
+						data:{
+							userId: user_id,
+							activityId: plus.webview.currentWebview().activity_id
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:5000,//超时时间设置为5秒；
+						success:function(response){
+							participate_activity.style.display="none";
+							exit_activity.style.display="block";
+							exit_activity.addEventListener('tap', function(event) {
+								alert("退出活动按钮（功能未实现）");
+							},false);
+							alert("参加活动成功!");
+						},
+						error:function(xhr,type,errorThrown){
+							console.log(xhr.status);
+							if(xhr.status==0){
+								alert("网络错误");
+							}
+							else if(xhr.status==500){
+								alert("错误的userId或activityId");
+							}
+							else{
+								alert("未知错误");
+							}
+						},
+					});
+				},false);
+				exit_activity=doc.getElementById("exit_activity");
+				exit_activity.addEventListener('tap', function(event) {
+					alert("退出活动按钮（功能未实现）");
+				},false);
+				cancel_activity=doc.getElementById("cancel_activity");
+				cancel_activity.addEventListener('tap', function(event) {
+					alert("取消活动按钮（功能未实现）");
+				},false);
+				finish_activity=doc.getElementById("finish_activity");
+				finish_activity.addEventListener('tap', function(event) {
+					alert("结束活动按钮（功能未实现）");
+				},false);
+				
+				// 根据activityId初始化界面
+				$.ajax(server_url+'/activity/getActivityById',{
+					data:{
+						activityId: plus.webview.currentWebview().activity_id,
+						ifOrganizerInfo: "true"
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:5000,//超时时间设置为5秒；
+					success:function(response){
+						activity_name.innerText=response["activity"]["activityName"];
+						activity_organizer.innerText=response["organizer"]["userName"];
+						activity_start_time.innerText=response["activity"]["startTime"].substring(0,19).replace(/T/g," ");
+						activity_end_time.innerText=response["activity"]["endTime"].substring(0,19).replace(/T/g," ");
+						activity_registration_deadline.innerText=response["activity"]["registrationDeadline"].substring(0,19).replace(/T/g," ");
+						switch(response["activity"]["activityStatus"]){
+							case "canceled":
+								activity_status.innerText="已取消";
+								break;
+							case "finished":
+								activity_status.innerText="已结束";
+								break;
+							case "underway":
+								activity_status.innerText="进行中";
+								break;
+							case "registration_closed":
+								activity_status.innerText="报名结束";
+								break;
+							case "registering":
+								activity_status.innerText="报名中";
+								break;
+						}
+						switch(response["activity"]["category"]){
+							case "scenic_spot":
+								activity_category.innerText="参观风景区";
+								break;
+							case "museum":
+								activity_category.innerText="参观博物馆/科技馆";
+								break;
+							case "house_party":
+								activity_category.innerText="轰趴";
+								break;
+							case "mountaineering":
+								activity_category.innerText="爬山";
+								break;
+							case "picnic":
+								activity_category.innerText="野餐";
+								break;
+							case "tabletop_game":
+								activity_category.innerText="桌游";
+								break;
+							case "others":
+								activity_category.innerText="其它";
+								break;
+						}
+						activity_location.innerText=response["activity"]["location"];
+						activity_detail.innerText=response["activity"]["detail"];
+						
+						var str = JSON.stringify(response);
+						console.log(str);
+						
+						// 根据user_id控制按钮类型
+						if(user_id==response["activity"]["organizerId"]){
+							cancel_activity.style.display="block";
+							finish_activity.style.display="block";
+						}
+						else{
+							$.ajax(server_url+'/participate/ifUserParticipated',{
+								data:{
+									userId: user_id,
+									activityId: plus.webview.currentWebview().activity_id
+								},
+								dataType:'json',//服务器返回json格式数据
+								type:'post',//HTTP请求类型
+								timeout:5000,//超时时间设置为5秒；
+								success:function(response){
+									var str = JSON.stringify(response);
+									console.log(str);
+									
+									if(response==true){
+										exit_activity.style.display="block";
+									}
+									else{
+										participate_activity.style.display="block";
+									}
+									
+								},
+								error:function(xhr,type,errorThrown){
+									console.log(xhr.status);
+									if(xhr.status==0){
+										alert("网络错误");
+									}
+									else if(xhr.status==500){
+										alert("错误的userId或activityId");
+									}
+									else{
+										alert("未知错误");
+									}
+								}
+							});
+						}
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(xhr.status);
+						if(xhr.status==0){
+							alert("网络错误");
+						}
+						else if(xhr.status==500){
+							alert("错误的activityId");
+						}
+						else{
+							alert("未知错误");
+						}
+					}
+				});
+				
+			});
+		}(mui, document));
+	</script>
+</html>

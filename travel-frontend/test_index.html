@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/style.css" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="mui-content-padded">
+			<button id='activity_test_1' class="mui-btn mui-btn-block mui-btn-primary">野餐1</button>
+			<button id='activity_test_2' class="mui-btn mui-btn-block mui-btn-primary">狼人杀</button>
+		</div>
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script src="js/mui.enterfocus.js"></script>
+	<script src="js/app.js"></script>
+	<script>
+		(function($, doc) {
+			$.init();
+			$.plusReady(function() {
+				
+				// 按钮为测试功能,对应的实现应为钟陈星实现的"获取活动列表"
+				var button_1 = doc.getElementById('activity_test_1');
+				button_1.addEventListener('tap', function(event) {
+					$.openWindow({
+						url: 'activity_detail.html',
+						id: 'activity_detail_1',
+						preload: true,
+						show: {
+							aniShow: 'pop-in'
+						},
+						extras: {
+							activity_id: "1001"
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				},false);
+				
+				var button_2 = doc.getElementById('activity_test_2');
+				button_2.addEventListener('tap', function(event) {
+					$.openWindow({
+						url: 'activity_detail.html',
+						id: 'activity_detail_2',
+						preload: true,
+						show: {
+							aniShow: 'pop-in'
+						},
+						extras: {
+							activity_id: "1002"
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				},false);
+				
+			});
+		}(mui, document));
+	</script>
+</html>
