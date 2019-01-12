@@ -78,7 +78,8 @@ public class ActivityController {
     }
 
     @PostMapping(value="/save")
-    public String saveActivity(HttpSession session, HttpServletRequest request) throws ParseException {
+    @ResponseBody
+    public Activity saveActivity(HttpSession session, HttpServletRequest request) throws ParseException {
         String activityName = request.getHeader("activityName");
         String startTime = request.getHeader("startTime");
         String endTime = request.getHeader("endTime");
@@ -95,7 +96,8 @@ public class ActivityController {
         Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
         System.out.println(newActivity);
         activityService.save(newActivity);
-        return "test good";
+        System.out.println("{\"code\":200,\"msg\":success}");
+        return newActivity;
     }
 
 }

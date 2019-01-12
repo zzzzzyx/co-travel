@@ -34,7 +34,7 @@
 	<body>
 		<div class="mui-content">
 			<div class="title">
-				您的账户状态：<b style=" color: green">已登录</b>
+				您的账户状态：<b style=" color: green">已登录</b> <u style="float:right; color: blue" id="renew">点此刷新</u>
 			</div>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
@@ -81,14 +81,20 @@
 	// 			mui.fire(main, 'gohome');
 	// 
 	// 		});
-			state = JSON.parse(localStorage.getItem("$state"))
-			console.log(state);
-			var nameLabel = doc.getElementById("username");
-			var universityLabel = doc.getElementById("university");
-			var sexLabel = doc.getElementById("sex");
-			nameLabel.innerHTML = state.userName;
-			sexLabel.innerHTML = state.sex=="male"?"男":"女";
-			universityLabel.innerHTML = state.university=='nju'?"南京大学":state.university;
+			
+			document.getElementById("renew").addEventListener("click", function(){
+				state = JSON.parse(localStorage.getItem("$state"))
+				console.log("renew");
+				var nameLabel = doc.getElementById("username");
+				var universityLabel = doc.getElementById("university");
+				var sexLabel = doc.getElementById("sex");
+				nameLabel.innerHTML = state.userName;
+				sexLabel.innerHTML = state.sex=="male"?"男":"女";
+				universityLabel.innerHTML = state.university=='nju'?"南京大学":state.university;
+				
+				doc.getElementById("renew").style.visibility="hidden";
+			});
+			mui.trigger(document.getElementById("renew"),"click");
 			document.getElementById("logout").addEventListener('tap', function() {
 				mui.confirm('确定退出登录？', '提示', ['确定', '取消'], function(e) {
 					if (e.index == 0) {
