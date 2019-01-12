@@ -18,10 +18,15 @@
 			type: 'post',
 			timeout: 3000,
 			headers: activityInfo,
+			dataType :"text",
 			success: function(data) {
 					console.dir(data)
-					callback('good');
-				}
+					callback('创建成功！');
+				},
+			error: function(data) {
+				console.log(data.activityStatus)
+				callback('创建失败！');
+			},
 			}
 		);
 	};

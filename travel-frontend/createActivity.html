@@ -143,11 +143,14 @@
 						};
 						app.save_activity(loginInfo, function(err) {
 							if (err) {
+								console.log("good")
 								plus.nativeUI.toast(err);
 								return;
 							}
+							console.log("good")
 							toMain();
 						});
+						window.location.href="subpages/user/user.html";
 					});
 					$.enterfocus('#login-form input', function() {
 						$.trigger(loginButton, 'tap');
