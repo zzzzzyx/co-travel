@@ -62,7 +62,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
+			<a href="subpages/user/user.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
 			<h1 class="mui-title">创建活动</h1>
 		</header>
 		<div class="mui-content">
@@ -115,7 +115,12 @@
 					statusBarBackground: '#f7f7f7'
 				});
 				$.plusReady(function() {
-					$.back = mui.back;
+
+					mui('body').on( 'tap' , 'a' , function(){
+						document.location.href=this.href;
+					});
+					$.back = function(){};//let back do nothing
+
 					
 					//检查 "登录状态/锁屏状态" 结束
 					var loginButton = doc.getElementById('login');
