@@ -3,6 +3,7 @@ package cn.nju.agile.travel.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,6 +57,19 @@ public class ActivityController {
         String activityName=request.getParameter("activityName");
 
         return activityService.getActivityByActivityName(activityName);
+    }
+
+    @RequestMapping(value="/findAllByCategory")
+    @ResponseBody
+    public List<Activity> findAllByCategory(HttpServletRequest request){
+        System.out.println("hhhhhh");
+        String category=request.getParameter("category");
+
+        System.out.println(category);
+        if(category.equals("all")){
+            return activityService.findAllByCategory("scenic_spot");
+        }
+        return activityService.findAllByCategory(category);
     }
 
     @PostMapping(value="/save")

@@ -14,7 +14,7 @@ public class UserPOJO implements Serializable {
     private String university;
 
     public UserPOJO(User user) {
-        this.userId = user.getId();
+        this.userId = String.valueOf(user.getId());
         this.userName = user.getUserName();
         this.sex = user.getSex();
         this.university = user.getUniversity();
