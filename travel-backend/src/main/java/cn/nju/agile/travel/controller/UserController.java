@@ -51,8 +51,30 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String getTest(HttpServletRequest request) {
-        return request.getQueryString();
+    public String register(HttpServletRequest request) {
+        String userName = request.getHeader(UserConstant.USER_NAME);
+        Result result;
+        if (userService.isUserNameExists(userName)){
+            result = new Result(StatusCode.USER_EXIST,"");
+        }else {
+            String password = request.getHeader(UserConstant.PASS_WORD);
+            String sex = request.getHeader(UserConstant.SEX);
+            String university = request.getHeader(UserConstant.UNIVERSITY);
+
+            User newUser = new User();
+            newUser.setUserName(userName);
+            newUser.setPwd(password);
+            newUser.setSex(sex);
+            newUser.setUniversity(university);
+
+            User res = userService.addUser(newUser);
+            if (res!=null){
+                result = new Result(StatusCode.SUCCESS_IN_REGISTER,"");
+            }else{
+                result = new Result(StatusCode.FAILED_IN_REGISTER,"");
+            }
+        }
+        return result.toJsonString();
     }
 
     // 修改个人基本信息,需要一个修改用户接口，传给你id

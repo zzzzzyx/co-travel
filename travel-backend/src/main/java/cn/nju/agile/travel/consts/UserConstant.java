@@ -5,4 +5,6 @@ public class UserConstant {
     public static final String USER_ID = "userId";
     public static final String USER_NAME = "userName";
     public static final String PASS_WORD = "password";
+    public static final String SEX = "sex";
+    public static final String UNIVERSITY = "university";
 }
