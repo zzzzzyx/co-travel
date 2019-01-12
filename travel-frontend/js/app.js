@@ -29,21 +29,26 @@
 		loginInfo = loginInfo || {};
 		loginInfo.account = loginInfo.account || '';
 		loginInfo.password = loginInfo.password || '';
-		if (loginInfo.account.length < 5) {
-			return callback('账号最短为 5 个字符');
+// 		if (loginInfo.account.length < 5) {
+// 			return callback('账号最短为 5 个字符');
+// 		}
+// 		if (loginInfo.password.length < 6) {
+// 			return callback('密码最短为 6 个字符');
+// 		}
+		
+		var settings = app.getSettings();
+		if (settings.autoLogin){
+			localStorage.setItem("$loginInfo",JSON.stringify(loginInfo));
 		}
-		if (loginInfo.password.length < 6) {
-			return callback('密码最短为 6 个字符');
-		}
-
+		
 		console.log(HOST + LOGIN);
 
 		mui.ajax(HOST + LOGIN, {
 			type: 'post',
 			timeout: 3000,
 			headers: {
-				'username': 'username',
-				'password': 'password',
+				'userName': loginInfo.account,
+				'password': loginInfo.password,
 			},
 			success: function(data) {
 				result = JSON.parse(data || {});
@@ -70,17 +75,14 @@
 		// 		}
 	};
 
-	owner.createState = function(userInfo, callback) {
+	owner.createState = function(userInfo,loginInfo, callback) {
 		var state = owner.getState();
 
 		state.userId = userInfo.userId;
 		state.userName = userInfo.userName;
-		state.email = userInfo.email;
 		state.sex = userInfo.sex;
-		state.birthday = userInfo.birthday;
-		state.avatarURL = userInfo.avatarURL;
-		state.token = userInfo.token;
-
+		state.university = userInfo.university;
+				
 		owner.setState(state);
 		return callback();
 	};

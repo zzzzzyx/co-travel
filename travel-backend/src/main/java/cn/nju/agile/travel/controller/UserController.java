@@ -106,7 +106,7 @@ public class UserController {
         String category = request.getHeader("category");
         String location = request.getHeader("location");
         String detail = request.getHeader("detail");
-        String organizerId = (String)session.getAttribute(UserConstant.USER_ID);
+        String organizerId = String.valueOf(session.getAttribute(UserConstant.USER_ID));
         String registrationDeadline = request.getHeader("registrationDeadline");
         String activityStatus = "init";
 
