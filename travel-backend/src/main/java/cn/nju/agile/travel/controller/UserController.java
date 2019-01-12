@@ -29,12 +29,10 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(HttpServletRequest request, HttpSession session) {
-        String userName = request.getHeader(UserConstant.USER_NAME);
-        String password = request.getHeader(UserConstant.PASS_WORD);
+        String userName = request.getParameter(UserConstant.USER_NAME);
+        String password = request.getParameter(UserConstant.PASS_WORD);
         
         User user = userService.getUserByUsernameAndPassword(userName, password);
-        logger.getLogger()
-                .debug("User Info: {}", JSON.toJSONString(user));
         Result result;
         
         if (user != null) {
@@ -55,14 +53,14 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(HttpServletRequest request) {
-        String userName = request.getHeader(UserConstant.USER_NAME);
+        String userName = request.getParameter(UserConstant.USER_NAME);
         Result result;
         if (userService.isUserNameExists(userName)){
             result = new Result(StatusCode.USER_EXIST,"");
         }else {
-            String password = request.getHeader(UserConstant.PASS_WORD);
-            String sex = request.getHeader(UserConstant.SEX);
-            String university = request.getHeader(UserConstant.UNIVERSITY);
+            String password = request.getParameter(UserConstant.PASS_WORD);
+            String sex = request.getParameter(UserConstant.SEX);
+            String university = request.getParameter(UserConstant.UNIVERSITY);
 
             User newUser = new User();
             newUser.setUserName(userName);

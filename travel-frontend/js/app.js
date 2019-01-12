@@ -47,7 +47,7 @@
 		mui.ajax(HOST + LOGIN, {
 			type: 'post',
 			timeout: 3000,
-			headers: {
+			data: {
 				'userName': loginInfo.account,
 				'password': loginInfo.password,
 			},
@@ -109,7 +109,7 @@
 		mui.ajax(HOST + REGISTER, {
 			type: 'post',
 			timeout: 3000,
-			headers: {
+			data: {
 				'userName': regInfo.account,
 				'password': regInfo.password,
 				'sex': regInfo.sex,
