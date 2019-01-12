@@ -109,7 +109,7 @@ public class UserController {
         String organizerId = String.valueOf(session.getAttribute(UserConstant.USER_ID));
         String registrationDeadline = request.getHeader("registrationDeadline");
         String activityStatus = "registering";
-        
+        System.out.println(organizerId);
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
         Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
