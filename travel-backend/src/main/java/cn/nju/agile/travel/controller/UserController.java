@@ -80,12 +80,12 @@ public class UserController {
     }
 
     // 修改个人基本信息,需要一个修改用户接口，传给你id
-    @RequestMapping(value = "/getByUserName")
+    @RequestMapping(value = "/getProfileById")
     @ResponseBody
-    public User getByUserName(HttpServletRequest request) {
-        String userName = request.getParameter("userName");
+    public User getProfileById() {
+        Long id = 1002L;
 
-        return userService.getById(userName);
+        return userService.getUserById(id);
     }
 
 }
