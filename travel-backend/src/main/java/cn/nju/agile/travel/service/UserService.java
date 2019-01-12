@@ -15,12 +15,20 @@ public class UserService {
         return userRepository.getUserByUserName(userName);
     }
 
-    public User getUserByUsernameAndPassword(String userName, String password){
-        return userRepository.getUserByNameAndPassword(userName,password);
+    public User getUserByUsernameAndPassword(String userName, String password) {
+        return userRepository.getUserByNameAndPassword(userName, password);
+    }
+
+    public boolean isUserNameExists(String userName) {
+        return userRepository.isUserNameExists(userName) > 0;
+    }
+
+    public User addUser(User user){
+        return userRepository.save(user);
     }
 
     public User getUserById(Long userId) {
-    	return userRepository.findById(userId).get();
+        return userRepository.findById(userId).get();
     }
-    
+
 }
