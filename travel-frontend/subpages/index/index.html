@@ -45,16 +45,21 @@
 			$.plusReady(function() {
 				var testButton = doc.getElementById('test');
 				testButton.addEventListener('tap', function(event) {
-					console.log(app.getHost());
+					console.log("/user/get");
 					mui.ajax(app.getHost()+"/user/get",{
-						dataType:'json',//服务器返回json格式数据
-						type:'get',//HTTP请求类型
-						timeout:3000,//超时时间设置为10秒；
+						headers:{
+							"token": app.getState().token,
+							"userId": app.getState().userId
+						},
+						type:'get',
+						timeout:3000,
 						success:function(data){
-							console.log(data)
+							result = data.valueOf();
+							result = JSON.parse(result||{});
+							console.log(result.data.userId);
 						},
 						error:function(xhr,type,errorThrown){
-							
+							return callback(errorThrown);
 						}
 					});
 				});

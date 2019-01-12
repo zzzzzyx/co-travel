@@ -1,6 +1,6 @@
 (function($, owner) {
-	// var HOST = "http://172.19.240.64:8080";
-	var HOST = "http://localhost:8080";
+	var HOST = "http://172.19.240.64:8080";
+	// var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
 	var REGISTER = "/user/register";
 	var SAVE_ACTIVITY = "/activity/save";
@@ -45,11 +45,6 @@
 // 			return callback('密码最短为 6 个字符');
 // 		}
 		
-		var settings = app.getSettings();
-		if (settings.autoLogin){
-			localStorage.setItem("$loginInfo",JSON.stringify(loginInfo));
-		}
-		
 		console.log(HOST + LOGIN);
 
 		mui.ajax(HOST + LOGIN, {
@@ -71,28 +66,22 @@
 				}
 			},
 			error: function(xhr, type, errorThrown) {
-				alert(type);
+				return callback(errorThrown);
 			}
 		});
-		// 		var users = JSON.parse(localStorage.getItem('$users') || '[]');
-		// 		var authed = users.some(function(user) {
-		// 			return loginInfo.account == user.account && loginInfo.password == user.password;
-		// 		});
-		// 		if (authed) {
-		// 			return owner.createState(loginInfo.account, callback);
-		// 		} else {
-		// 			return callback('用户名或密码错误');
-		// 		}
 	};
 
 	owner.createState = function(userInfo, callback) {
 		var state = owner.getState();
-
+		
+		console.log(userInfo);
+		
 		state.userId = userInfo.userId;
 		state.userName = userInfo.userName;
 		state.sex = userInfo.sex;
 		state.university = userInfo.university;
-				
+		state.token = userInfo.token;
+		
 		owner.setState(state);
 		return callback();
 	};

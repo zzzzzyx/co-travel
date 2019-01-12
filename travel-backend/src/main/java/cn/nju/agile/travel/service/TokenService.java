@@ -15,12 +15,12 @@ import java.util.Random;
 
 @Service("tokenService")
 public class TokenService {
-
+    
     @Resource
     private RedisUtil redisUtil;
-
+    
     public String generateToken(String userName) {
-        return new StringBuffer("token:")
+        return new StringBuffer()
                 .append(DigestUtils.sha1DigestAsHex(userName))
                 .append("-")
                 .append(new SimpleDateFormat("yyyyMMddHHmmssSSS").format(new Date()))
@@ -28,18 +28,18 @@ public class TokenService {
                 .append(new Random().nextInt(987654321))
                 .toString();
     }
-
+    
     public void save(String token, UserPOJO user) {
         redisUtil.set(token, JSON.toJSONString(user));
     }
-
+    
     public UserPOJO getUserByToken(String token) {
         return JSON.parseObject(redisUtil.get(token), UserPOJO.class);
     }
-
+    
     public boolean checkToken(String token, String userId) {
         String userJsonString = redisUtil.get(token);
-
+        
         if (StringUtils.isEmpty(userJsonString)) {
             return false;
         }

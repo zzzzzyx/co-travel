@@ -77,10 +77,12 @@ public class UserController {
 
     @Secured
     @GetMapping(value = "/get")
-    @ResponseBody
-    public UserPOJO get(HttpServletRequest request){
-        // 通过tokenService和token可以获取当前用户的信息
-        return tokenService.getUserByToken(request.getHeader(UserConstant.USER_TOKEN));
+    public String get(HttpServletRequest request){
+        String token = request.getHeader(UserConstant.USER_TOKEN);
+        UserPOJO user = tokenService.getUserByToken(token);
+        // Your business code
+        // ...
+        return new Result(StatusCode.QUERY_SUCCESS,user).toJsonString();
     }
     
     // 修改个人基本信息,需要一个修改用户接口，传给你id
