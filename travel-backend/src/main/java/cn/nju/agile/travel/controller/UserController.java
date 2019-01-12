@@ -77,7 +77,17 @@ public class UserController {
         }
         return result.toJsonString();
     }
-
+    
+    @GetMapping(value = "/get")
+    @ResponseBody
+    public User get(HttpSession session){
+        System.out.println(JSON.toJSONString(session));
+        System.out.println(JSON.toJSONString(session.getAttributeNames()));
+        Object userId = session.getAttribute(UserConstant.USER_ID);
+        System.out.println((long)userId);
+        return userService.getUserById((long)userId);
+    }
+    
     // 修改个人基本信息,需要一个修改用户接口，传给你id
     @RequestMapping(value = "/getProfileById")
     @ResponseBody
