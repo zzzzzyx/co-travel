@@ -39,8 +39,7 @@ public class UserController {
     public String login(HttpServletRequest request, HttpSession session) {
         String userName = request.getHeader(UserConstant.USER_NAME);
         String password = request.getHeader(UserConstant.PASS_WORD);
-        userName = "Testt";
-        password="111111";
+
         User user = userService.getUserByUsernameAndPassword(userName, password);
         logger.getLogger()
                 .debug("User Info: {}", JSON.toJSONString(user));
@@ -110,7 +109,7 @@ public class UserController {
         String registrationDeadline = request.getHeader("registrationDeadline");
         String activityStatus = "registering";
         System.out.println(organizerId);
-        organizerId = "0002";
+        organizerId = "1002";
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
         Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
