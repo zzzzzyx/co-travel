@@ -39,8 +39,7 @@ public class UserController {
     public String login(HttpServletRequest request, HttpSession session) {
         String userName = request.getHeader(UserConstant.USER_NAME);
         String password = request.getHeader(UserConstant.PASS_WORD);
-        userName = "Testt";
-        password="111111";
+        
         User user = userService.getUserByUsernameAndPassword(userName, password);
         logger.getLogger()
                 .debug("User Info: {}", JSON.toJSONString(user));

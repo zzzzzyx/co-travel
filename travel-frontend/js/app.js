@@ -2,6 +2,7 @@
 	var HOST = "http://172.19.240.64:8080";
 	// var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
+	var REGISTER = "/user/register";
 	var SAVE_ACTIVITY = "/user/save";
 
 	owner.save_activity = function(activityInfo, callback) {
@@ -54,9 +55,7 @@
 				result = JSON.parse(data || {});
 				console.log(result);
 				console.log(result.data);
-				
-				
-				
+							
 				if (result.statusCode.code == 200) {
 					return owner.createState(result.data, callback);
 				} else {
@@ -98,18 +97,38 @@
 		regInfo = regInfo || {};
 		regInfo.account = regInfo.account || '';
 		regInfo.password = regInfo.password || '';
+		regInfo.sex = regInfo.sex || '';
+		regInfo.university = regInfo.university || '';
 		if (regInfo.account.length < 5) {
 			return callback('用户名最短需要 5 个字符');
 		}
 		if (regInfo.password.length < 6) {
 			return callback('密码最短需要 6 个字符');
 		}
-		if (!checkEmail(regInfo.email)) {
-			return callback('邮箱地址不合法');
-		}
-		var users = JSON.parse(localStorage.getItem('$users') || '[]');
-		users.push(regInfo);
-		localStorage.setItem('$users', JSON.stringify(users));
+		
+		mui.ajax(HOST + REGISTER, {
+			type: 'post',
+			timeout: 3000,
+			headers: {
+				'userName': regInfo.account,
+				'password': regInfo.password,
+				'sex': regInfo.sex,
+				'university': regInfo.university
+			},
+			success: function(data) {
+				result = JSON.parse(data || {});
+				console.log(result);
+				console.log(result.data);
+							
+				if (result.statusCode.code != 300) {
+					return callback(result.statusCode.message);
+				} 
+			},
+			error: function(xhr, type, errorThrown) {
+				return errorThrown;
+			}
+		});
+		
 		return callback();
 	};
 
