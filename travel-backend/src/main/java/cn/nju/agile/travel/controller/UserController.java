@@ -98,7 +98,7 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public String save(HttpServletRequest request, HttpSession session){
+    public String save(HttpServletRequest request, HttpSession session) throws ParseException {
         logger.getLogger().debug("hola activity");
         String activityName = request.getHeader("activityName");
         String startTime = request.getHeader("startTime");
@@ -108,29 +108,13 @@ public class UserController {
         String detail = request.getHeader("detail");
         String organizerId = String.valueOf(session.getAttribute(UserConstant.USER_ID));
         String registrationDeadline = request.getHeader("registrationDeadline");
-        String activityStatus = "init";
+        String activityStatus = "registering";
+        organizerId = "1004";
 
-        System.out.println("activityName " + activityName);
-        System.out.println("startTime " + startTime);
-        System.out.println("endTime " + endTime);
-        System.out.println("category " + category);
-        System.out.println("location " + location);
-        System.out.println("detail " + activityName);
-        System.out.println("organizerId " + organizerId);
-        System.out.println("registrationDeadline " + registrationDeadline);
-        System.out.println("activityStatus " + activityStatus);
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-ddTHH:mm");
-
-        Activity newActivity = null;
-        try {
-            newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
         System.out.println(newActivity);
-        logger.getLogger()
-                .debug("User Info: {}", JSON.toJSONString(newActivity));
         activityService.save(newActivity);
         return "test good";
     }
