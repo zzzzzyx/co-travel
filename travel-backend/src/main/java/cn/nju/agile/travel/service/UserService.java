@@ -14,7 +14,11 @@ public class UserService {
     public User getByUserName(String userName) {
         return userRepository.getUserByUserName(userName);
     }
-    
+
+    public User getUserByUsernameAndPassword(String userName, String password){
+        return userRepository.getUserByNameAndPassword(userName,password);
+    }
+
     public User getUserById(Long userId) {
     	return userRepository.findById(userId).get();
     }
