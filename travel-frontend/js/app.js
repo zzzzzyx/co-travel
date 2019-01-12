@@ -1,8 +1,8 @@
 (function($, owner) {
-	var HOST = "http://172.19.240.64:8080";
-	// var HOST = "http://localhost:8080";
+	// var HOST = "http://172.19.240.64:8080";
+	var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
-	var SAVE_ACTIVITY = "/user/save";
+	var SAVE_ACTIVITY = "/activity/save";
 
 	owner.save_activity = function(activityInfo, callback) {
 		callback = callback || $.noop;

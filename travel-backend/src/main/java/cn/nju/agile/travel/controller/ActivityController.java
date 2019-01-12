@@ -9,7 +9,6 @@ import javax.servlet.http.HttpSession;
 
 import cn.nju.agile.travel.consts.UserConstant;
 import cn.nju.agile.travel.service.LogService;
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,5 +62,26 @@ public class ActivityController {
         return activityService.getActivityByActivityName(activityName);
     }
 
+    @PostMapping("/save")
+    public String save(HttpServletRequest request, HttpSession session) throws ParseException {
+        logger.getLogger().debug("hola activity");
+        String activityName = request.getHeader("activityName");
+        String startTime = request.getHeader("startTime");
+        String endTime = request.getHeader("endTime");
+        String category = request.getHeader("category");
+        String location = request.getHeader("location");
+        String detail = request.getHeader("detail");
+        String organizerId = String.valueOf(session.getAttribute(UserConstant.USER_ID));
+        String registrationDeadline = request.getHeader("registrationDeadline");
+        String activityStatus = "registering";
+        System.out.println(organizerId);
+        organizerId = "1002";
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
+        System.out.println(newActivity);
+        activityService.save(newActivity);
+        return "test good";
+    }
 
 }

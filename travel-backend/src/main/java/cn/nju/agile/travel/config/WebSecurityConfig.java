@@ -13,7 +13,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
     
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(accessInterceptor).addPathPatterns("/**").excludePathPatterns("/user/*");
+        registry.addInterceptor(accessInterceptor).addPathPatterns("/**").excludePathPatterns("/**");
     }
     
 }
