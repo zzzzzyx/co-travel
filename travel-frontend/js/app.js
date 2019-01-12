@@ -1,33 +1,25 @@
 (function($, owner) {
-	var HOST = "http://172.19.240.64:8080";
-	var LOCALHOST = "http://localhost:8080";
+	//var HOST = "http://172.19.240.64:8080";
+	var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
-	var SAVE_ACTIVITY = "/activity/save";
+	var SAVE_ACTIVITY = "/user/save";
 
 	owner.save_activity = function(activityInfo, callback) {
 		callback = callback || $.noop;
 		activityInfo = activityInfo || {};
 
-		console.log(LOCALHOST + SAVE_ACTIVITY);
-		console.log(activityInfo)
-		mui.ajax(LOCALHOST + SAVE_ACTIVITY, {
+		console.log(HOST + SAVE_ACTIVITY);
+		console.log(activityInfo.category)
+		mui.ajax(HOST + SAVE_ACTIVITY, {
 			type: 'post',
 			timeout: 3000,
 			headers: activityInfo,
 			success: function(data) {
-				result = JSON.parse(data || {});
-				console.log(result);
-				console.log(result.data);
-				if (result.statusCode.code == 200) {
-					return owner.createState(result.data, callback);
-				} else {
-					return callback(result.statusCode.message);
+					console.dir(data)
+					callback('good');
 				}
-			},
-			error: function(xhr, type, errorThrown) {
-				alert(type);
 			}
-		});
+		);
 	};
 	/**
 	 * 用户登录
