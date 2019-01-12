@@ -85,7 +85,7 @@ public class UserController {
     public User getByUserName(HttpServletRequest request) {
         String userName = request.getParameter("userName");
 
-        return userService.getByUserName(userName);
+        return userService.getById(userName);
     }
 
 }
