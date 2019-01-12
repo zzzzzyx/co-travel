@@ -4,7 +4,10 @@
 	var LOGIN = "/user/login";
 	var REGISTER = "/user/register";
 	var SAVE_ACTIVITY = "/activity/save";
-
+	
+	owner.getHost = function(){
+		return HOST;
+	};
 	owner.save_activity = function(activityInfo, callback) {
 		callback = callback || $.noop;
 		activityInfo = activityInfo || {};
