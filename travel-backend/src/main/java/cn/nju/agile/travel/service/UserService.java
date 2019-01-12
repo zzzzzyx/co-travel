@@ -11,9 +11,6 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public User getByUserName(String userName) {
-        return userRepository.getUserByUserName(userName);
-    }
 
     public User getUserByUsernameAndPassword(String userName, String password) {
         return userRepository.getUserByNameAndPassword(userName, password);

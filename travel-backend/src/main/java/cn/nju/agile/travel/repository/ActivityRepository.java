@@ -5,9 +5,14 @@ import org.springframework.stereotype.Repository;
 
 import cn.nju.agile.travel.entity.Activity;
 
+import java.util.List;
+
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long>{
 	
 	Activity getActivityByActivityName(String activityName);
-	
+
+	List<Activity> findAllByCategory(String Category);
+
+
 }

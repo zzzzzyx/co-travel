@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import cn.nju.agile.travel.entity.Activity;
 import cn.nju.agile.travel.repository.ActivityRepository;
 
+import java.util.List;
+
 @Service
 public class ActivityService {
 	
@@ -25,4 +27,8 @@ public class ActivityService {
     public void save(Activity newActivity) {
 		activityRepository.save(newActivity);
     }
+
+    public List<Activity> findAllByCategory(String category){
+		return activityRepository.findAllByCategory(category);
+	}
 }
