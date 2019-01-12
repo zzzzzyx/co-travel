@@ -127,8 +127,14 @@
 						},20);
 					};
 					//检查 "登录状态" 开始
-					if (settings.autoLogin && state.token) {
-						toMain();
+					if (settings.autoLogin && localStorage.getItem("$loginInfo")) {
+						app.login(JSON.parse(localStorage.getItem("$loginInfo")||"{}"), function(err) {
+							if (err) {
+								plus.nativeUI.toast(err);
+								return;
+							}
+							toMain();
+						});
 					}
 					// close splash
 					setTimeout(function() {

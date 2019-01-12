@@ -1,6 +1,6 @@
 (function($, owner) {
-	var HOST = "http://172.19.240.64:8080";
-	var LOCALHOST = "http://localhost:8080";
+	// var HOST = "http://172.19.240.64:8080";
+	var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
 	var SAVE_ACTIVITY = "/activity/save";
 
@@ -8,26 +8,18 @@
 		callback = callback || $.noop;
 		activityInfo = activityInfo || {};
 
-		console.log(LOCALHOST + SAVE_ACTIVITY);
-		console.log(activityInfo)
-		mui.ajax(LOCALHOST + SAVE_ACTIVITY, {
+		console.log(HOST + SAVE_ACTIVITY);
+		console.log(activityInfo.category)
+		mui.ajax(HOST + SAVE_ACTIVITY, {
 			type: 'post',
 			timeout: 3000,
 			headers: activityInfo,
 			success: function(data) {
-				result = JSON.parse(data || {});
-				console.log(result);
-				console.log(result.data);
-				if (result.statusCode.code == 200) {
-					return owner.createState(result.data, callback);
-				} else {
-					return callback(result.statusCode.message);
+					console.dir(data)
+					callback('good');
 				}
-			},
-			error: function(xhr, type, errorThrown) {
-				alert(type);
 			}
-		});
+		);
 	};
 	/**
 	 * 用户登录
@@ -37,26 +29,34 @@
 		loginInfo = loginInfo || {};
 		loginInfo.account = loginInfo.account || '';
 		loginInfo.password = loginInfo.password || '';
-		if (loginInfo.account.length < 5) {
-			return callback('账号最短为 5 个字符');
+// 		if (loginInfo.account.length < 5) {
+// 			return callback('账号最短为 5 个字符');
+// 		}
+// 		if (loginInfo.password.length < 6) {
+// 			return callback('密码最短为 6 个字符');
+// 		}
+		
+		var settings = app.getSettings();
+		if (settings.autoLogin){
+			localStorage.setItem("$loginInfo",JSON.stringify(loginInfo));
 		}
-		if (loginInfo.password.length < 6) {
-			return callback('密码最短为 6 个字符');
-		}
-
+		
 		console.log(HOST + LOGIN);
 
 		mui.ajax(HOST + LOGIN, {
 			type: 'post',
 			timeout: 3000,
 			headers: {
-				'username': 'username',
-				'password': 'password',
+				'userName': loginInfo.account,
+				'password': loginInfo.password,
 			},
 			success: function(data) {
 				result = JSON.parse(data || {});
 				console.log(result);
 				console.log(result.data);
+				
+				
+				
 				if (result.statusCode.code == 200) {
 					return owner.createState(result.data, callback);
 				} else {
@@ -83,12 +83,9 @@
 
 		state.userId = userInfo.userId;
 		state.userName = userInfo.userName;
-		state.email = userInfo.email;
 		state.sex = userInfo.sex;
-		state.birthday = userInfo.birthday;
-		state.avatarURL = userInfo.avatarURL;
-		state.token = userInfo.token;
-
+		state.university = userInfo.university;
+				
 		owner.setState(state);
 		return callback();
 	};

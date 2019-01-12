@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import cn.nju.agile.travel.consts.UserConstant;
+import cn.nju.agile.travel.service.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,10 @@ import cn.nju.agile.travel.service.UserService;
 @RestController
 @RequestMapping(value = "/activity")
 public class ActivityController {
-	
+
+    @Autowired
+    private LogService logger;
+
 	@Autowired
 	private ActivityService activityService;
 	
@@ -59,6 +63,7 @@ public class ActivityController {
         return activityService.getActivityByActivityName(activityName);
     }
 
+
     @RequestMapping(value="/findAllByCategory")
     @ResponseBody
     public List<Activity> findAllByCategory(HttpServletRequest request){
@@ -73,21 +78,24 @@ public class ActivityController {
     }
 
     @PostMapping(value="/save")
-    public void saveActivity(HttpSession session, HttpServletRequest request) throws ParseException {
+    public String saveActivity(HttpSession session, HttpServletRequest request) throws ParseException {
         String activityName = request.getHeader("activityName");
         String startTime = request.getHeader("startTime");
         String endTime = request.getHeader("endTime");
         String category = request.getHeader("category");
         String location = request.getHeader("location");
         String detail = request.getHeader("detail");
-        String organizerId = (String)session.getAttribute(UserConstant.USER_ID);
+        String organizerId = String.valueOf(session.getAttribute(UserConstant.USER_ID));
         String registrationDeadline = request.getHeader("registrationDeadline");
-        String activityStatus = "init";
+        String activityStatus = "registering";
+        System.out.println(organizerId);
+        organizerId = "1002";
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
         Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);
         System.out.println(newActivity);
         activityService.save(newActivity);
+        return "test good";
     }
 
 }

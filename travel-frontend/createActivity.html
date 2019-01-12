@@ -62,7 +62,7 @@
 
 	<body>
 		<header class="mui-bar mui-bar-nav">
-			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
+			<a href='main.html' class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
 			<h1 class="mui-title">创建活动</h1>
 		</header>
 		<div class="mui-content">
@@ -78,10 +78,10 @@
 				<div class="mui-input-row">
 					<label>活动类型</label>
 					<select id='category'>
-					  <option value="outdoor">户外活动</option>
-					  <option value="chamber">室内运动</option>
-					  <option value="table">桌游</option>
-					  <option value="other">其他</option>
+					  <option value="museum">博物馆</option>
+					  <option value="picnic">野餐</option>
+					  <option value="tabletop_game">桌游</option>
+					  <option value="others">其他</option>
 					</select>
 				</div>
 				<div class="mui-input-row">
@@ -115,39 +115,7 @@
 					statusBarBackground: '#f7f7f7'
 				});
 				$.plusReady(function() {
-					plus.screen.lockOrientation("portrait-primary");
-					var settings = app.getSettings();
-					var state = app.getState();
-					var mainPage = plus.webview.getWebviewById("main");
-					var main_loaded_flag = false;
-					if(!mainPage){
-						mainPage = $.preload({
-							"id": 'main',
-							"url": 'main.html'
-						});
-					}else{
-						main_loaded_flag = true;
-					}
-					
-					mainPage.addEventListener("loaded",function () {
-						main_loaded_flag = true;
-					});
-					var toMain = function() {
-						//使用定时器的原因：
-						//可能执行太快，main页面loaded事件尚未触发就执行自定义事件，此时必然会失败
-						var id = setInterval(function () {
-							if(main_loaded_flag){
-								clearInterval(id);
-								$.fire(mainPage, 'show', null);
-								mainPage.show("pop-in");
-							}
-						},20);
-					};
-					// close splash
-					setTimeout(function() {
-						//关闭 splash
-						plus.navigator.closeSplashscreen();
-					}, 600);
+					$.back = mui.back;
 					//检查 "登录状态/锁屏状态" 结束
 					var loginButton = doc.getElementById('login');
 					var activityNameBox = doc.getElementById('activityName');
@@ -179,19 +147,6 @@
 						$.trigger(loginButton, 'tap');
 					});
 
-					var backButtonPress = 0;
-					$.back = function(event) {
-						backButtonPress++;
-						if (backButtonPress > 1) {
-							plus.runtime.quit();
-						} else {
-							plus.nativeUI.toast('再按一次退出应用');
-						}
-						setTimeout(function() {
-							backButtonPress = 0;
-						}, 1000);
-						return false;
-					};
 				});
 			}(mui, document));
 		</script>
