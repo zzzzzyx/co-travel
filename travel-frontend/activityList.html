@@ -57,52 +57,74 @@
 <script src="js/mui.enterfocus.js"></script>
 <script src="js/app.js"></script>
 <script>
-    (function($, doc) {
-        function getActivityListByCategory(category){
-            $.ajax({
-                headers:{
-                  'category':category
-                },
-                dataType:'json',
-                contentType:'json',
-                url:server_url+'/activity/findAllByCategory',
-                type:'POST',
-                timeout:5000,
-                success:function (response) {
-                    var str = JSON.stringify(response);
-                    console.log(str);
-                },
-                error:function(xhr,type,errorThrown){
-                    console.log(xhr.status);
-                    if(xhr.status==0){
-                        alert("网络错误");
-                    }
-                    else if(xhr.status==500){
-                        alert("错误的userId或activityId");
-                    }
-                    else{
-                        alert("未知错误");
-                    }
-                }
-            })
-        }
-
-        $.init();
-        //server_url="http://192.168.69.57:8080";
-        server_url="http://localhost:8080";
-        select = doc.getElementById("select-type")
-        select.addEventListener('change',function(e){
-            console.log(select.value)
-            getActivityListByCategory(select.value);
-        })
-
-        $.plusReady(function() {
-
-            // 测试用的user_id
-            user_id=1003;
-
-
-        });
-    }(mui, document));
+        (function($, doc) {
+			function getActivityListByCategory(thecategory){
+				$.ajax('http://192.168.31.49:8080'+'/activity/findAllByCategory',{
+				    data:{
+				      category:thecategory
+				    },
+				    dataType:'json',
+				    type:'post',
+				    timeout:5000,
+				    success:function (response) {
+				        var str = JSON.stringify(response);
+				        console.log(str);
+				    },
+				    error:function(xhr,type,errorThrown){
+				        console.log(xhr.status);
+				        if(xhr.status==0){
+				            alert("网络错误");
+				        }
+				        else if(xhr.status==500){
+				            alert("错误的userId或activityId");
+				        }
+				        else{
+				            alert("未知错误");
+				        }
+				    }
+				})
+			}
+			
+        	$.init();
+        	$.plusReady(function() {
+				select = doc.getElementById("select-type")
+				select.addEventListener('change',function(e){
+				    getActivityListByCategory(select.value);
+					/*user_id = 1001
+					activity_id = 1001
+					$.ajax('http://192.168.31.49:8080/'+'participate/addParticipate',{
+						data:{
+							userId: user_id,
+							activityId: activity_id
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:5000,//超时时间设置为5秒；
+						success:function(response){
+							console.log("hahhhh")
+							participate_activity.style.display="none";
+							exit_activity.style.display="block";
+							exit_activity.addEventListener('tap', function(event) {
+								alert("退出活动按钮（功能未实现）");
+							},false);
+							alert("参加活动成功!");
+						},
+						error:function(xhr,type,errorThrown){
+							console.log(xhr.status);
+							if(xhr.status==0){
+								alert("网络错误");
+							}
+							else if(xhr.status==500){
+								alert("错误的userId或activityId");
+							}
+							else{
+								alert("未知错误");
+							}
+						},
+					});*/
+				},false)
+        		
+        	});
+        }(mui, document));
 </script>
 </html>
