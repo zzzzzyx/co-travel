@@ -1,5 +1,5 @@
 (function($, owner) {
-	var HOST = "http://192.168.31.49:8080";
+	var HOST = "http://172.19.240.64:8080";
 	// var HOST = "http://localhost:8080";
 	var LOGIN = "/user/login";
 	var REGISTER = "/user/register";

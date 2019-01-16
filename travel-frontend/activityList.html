@@ -15,16 +15,16 @@
 <div class="mui-content">
     <form id="choose-activity-type" class="mui-input-group">
         <div class="mui-input-row">
-            <label>Select activity type:</label>
+            <label>活动类别</label>
             <select class="mui-select" id="select-type">
-                <option value="all">All</option>
-                <option value="scenic_spot">Scenic Spot</option>
-                <option value="museum">Museum</option>
-                <option value="house_party">House Party</option>
-                <option value="mountaineering">Mountaineering</option>
-                <option value="picnic">Picnic</option>
-                <option value="tabletop_game">Tabletop Game</option>
-                <option value="others">Others</option>
+                <option value="all">全部活动</option>
+                <option value="scenic_spot">游览风景区</option>
+                <option value="museum">参观博物馆/科技馆</option>
+                <option value="house_party">轰趴</option>
+                <option value="mountaineering">爬山</option>
+                <option value="picnic">野餐</option>
+                <option value="tabletop_game">桌游</option>
+                <option value="others">其它</option>
             </select>
         </div>
     </form>
@@ -57,57 +57,21 @@
 <script src="js/mui.enterfocus.js"></script>
 <script src="js/app.js"></script>
 <script>
-        (function($, doc) {
-			function getActivityListByCategory(thecategory){
-				$.ajax('http://192.168.31.49:8080'+'/activity/findAllByCategory',{
-				    data:{
-				      category:thecategory
-				    },
-				    dataType:'json',
-				    type:'post',
-				    timeout:5000,
-				    success:function (response) {
-				        var str = JSON.stringify(response);
-				        console.log(str);
-				    },
-				    error:function(xhr,type,errorThrown){
-				        console.log(xhr.status);
-				        if(xhr.status==0){
-				            alert("网络错误");
-				        }
-				        else if(xhr.status==500){
-				            alert("错误的userId或activityId");
-				        }
-				        else{
-				            alert("未知错误");
-				        }
-				    }
-				})
-			}
-			
-        	$.init();
-        	$.plusReady(function() {
-				select = doc.getElementById("select-type")
-				select.addEventListener('change',function(e){
-				    getActivityListByCategory(select.value);
-					/*user_id = 1001
-					activity_id = 1001
-					$.ajax('http://192.168.31.49:8080/'+'participate/addParticipate',{
+		(function($, doc) {
+			$.init();
+			$.plusReady(function() {
+				function getActivityList(activity_category){
+					$.ajax(server_url+'/activity/findAllByCategory',{
 						data:{
-							userId: user_id,
-							activityId: activity_id
+							category: activity_category
 						},
 						dataType:'json',//服务器返回json格式数据
 						type:'post',//HTTP请求类型
 						timeout:5000,//超时时间设置为5秒；
 						success:function(response){
-							console.log("hahhhh")
-							participate_activity.style.display="none";
-							exit_activity.style.display="block";
-							exit_activity.addEventListener('tap', function(event) {
-								alert("退出活动按钮（功能未实现）");
-							},false);
-							alert("参加活动成功!");
+							console.log("------");
+							var str = JSON.stringify(response);
+							console.log(str);
 						},
 						error:function(xhr,type,errorThrown){
 							console.log(xhr.status);
@@ -121,10 +85,17 @@
 								alert("未知错误");
 							}
 						},
-					});*/
-				},false)
-        		
-        	});
-        }(mui, document));
-</script>
-</html>
+					});
+				}
+				
+				server_url="http://172.19.240.64:8080";
+				type_select=doc.getElementById('select-type');
+				type_select.addEventListener('change',function(e){
+					getActivityList(type_select.value);
+				})
+				
+				
+			});
+		}(mui, document));
+	</script>
+</html>                                                                                                                                                                                        
