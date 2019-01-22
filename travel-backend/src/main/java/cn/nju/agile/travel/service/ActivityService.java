@@ -31,4 +31,6 @@ public class ActivityService {
     public List<Activity> findAllByCategory(String category){
 		return activityRepository.findAllByCategory(category);
 	}
+
+	public List<Activity> findAll(){ return activityRepository.findAll();}
 }

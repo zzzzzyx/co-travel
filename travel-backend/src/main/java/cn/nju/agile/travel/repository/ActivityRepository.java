@@ -14,5 +14,6 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
 
 	List<Activity> findAllByCategory(String Category);
 
+	List<Activity> findAll();
 
 }

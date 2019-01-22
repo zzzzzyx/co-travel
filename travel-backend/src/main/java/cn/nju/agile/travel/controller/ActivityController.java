@@ -67,12 +67,11 @@ public class ActivityController {
     @RequestMapping(value="/findAllByCategory")
     @ResponseBody
     public List<Activity> findAllByCategory(HttpServletRequest request){
-        System.out.println("hhhhhh");
         String category=request.getParameter("category");
 
         System.out.println(category);
         if(category.equals("all")){
-            return activityService.findAllByCategory("scenic_spot");
+            return activityService.findAll();
         }
         return activityService.findAllByCategory(category);
     }
