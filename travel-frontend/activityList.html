@@ -13,6 +13,18 @@
 		.title {
 			color:black
 		}
+		.btn-fixed {
+			position: fixed;
+			bottom: 0;
+			right: 0;
+			margin: 30px;
+			border-radius: 50%;
+			padding: 15px 12px;
+		}
+		.activity-card {
+			background-color: #ffffff;
+			margin-top: 8px;
+		}
 	</style>
 </head>
 <body>
@@ -37,7 +49,7 @@
         </div>
     </form>
     <div class="mui-content-padded" id="activity_list">
-        <div class = "mui-card md-shadow" style="background-color: #007aff">
+        <div class = "mui-card md-shadow activity-card" >
 				<div class="mui-card-header  mui-content-padded" >
 					<p class="mui-text-center"><strong class="text-strong title">爬紫荆山</strong></p>
 					<p>开始于[2019-01-02]</p>
@@ -49,7 +61,7 @@
 					<p>报名截止时间：2019-01-01</p>
 				</div>
         </div>
-         <div class = "mui-card md-shadow" style="background-color: #007aff">
+         <div class = "mui-card md-shadow activity-card" >
         		<div class="mui-card-header  mui-content-padded" >
         			<p class="mui-text-center"><strong class="text-strong title">爬紫荆山</strong></p>
         			<p>开始于[2019-01-02]</p>
@@ -62,7 +74,8 @@
         		</div>
         </div>
     </div>
-
+	
+	<button type="button" class="mui-btn mui-btn-primary btn-fixed" id="activity-add">添加</button>
 </div>
 </body>
 <script src="js/mui.min.js"></script>
@@ -87,7 +100,7 @@
 							response.forEach(function(value,i){
 								console.log(JSON.stringify(value));
 								console.log(value["id"])
-								activitys.push('<div class = "mui-card md-shadow" style="background-color: #007aff">');
+								activitys.push('<div class = "mui-card md-shadow activity-card" >');
 								activitys.push('<div class="mui-card-header   mui-content-padded" >');
 								activitys.push('<p class="mui-text-center"><strong class="text-strong title">'+ value["activityName"] +'</strong></p>');
 								activitys.push('<p> 开始于'+value["startTime"]+'</p>')
@@ -116,8 +129,13 @@
 				
 				server_url="http://172.19.240.64:8080";
 				type_select=doc.getElementById('select-type');
+				add_activity = doc.getElementById('activity-add');
 				type_select.addEventListener('change',function(e){
 					getActivityList(type_select.value);
+				})
+				add_activity.addEventListener('click',function(e){
+					// 跳转到添加活动页面...
+					
 				})
 				getActivityList(type_select.value);
 				
