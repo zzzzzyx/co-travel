@@ -97,9 +97,11 @@
 							var parent = doc.getElementById('activity_list');
 							parent.innerHTML = ""
 							var activitys = [];
+							activityIDList = [];
 							response.forEach(function(value,i){
 								console.log(JSON.stringify(value));
 								console.log(value["id"])
+								activityIDList.push(value["id"]);
 								activitys.push('<div class = "mui-card md-shadow activity-card" >');
 								activitys.push('<div class="mui-card-header   mui-content-padded" >');
 								activitys.push('<p class="mui-text-center"><strong class="text-strong title">'+ value["activityName"] +'</strong></p>');
@@ -111,6 +113,10 @@
 							})
 							parent.innerHTML = parent.innerHTML + activitys.join('');			
 							
+							listItem = doc.getElementsByClassName('activity-card');
+							for(var i=0; i<listItem.length;i++){
+								clickActivity(i);
+							}
 						},
 						error:function(xhr,type,errorThrown){
 							console.log(xhr.status);
@@ -127,6 +133,28 @@
 					});
 				}
 				
+				function clickActivity(index){
+					listItem[index].addEventListener('tap',function(event){
+						console.log(activityIDList[index]);
+						$.openWindow({
+							url: 'activity_detail.html',
+							id: activityIDList[index],
+							preload: true,
+							show: {
+								aniShow: 'pop-in'
+							},
+							extras: {
+								activity_id: "1002"
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+					})
+				}
+				
+				var activityIDList = [];
+				var listItem = [];
 				server_url="http://172.19.240.64:8080";
 				type_select=doc.getElementById('select-type');
 				add_activity = doc.getElementById('activity-add');
@@ -135,7 +163,7 @@
 				})
 				add_activity.addEventListener('click',function(e){
 					// 跳转到添加活动页面...
-					
+					console.log("点击按钮");
 				})
 				getActivityList(type_select.value);
 				
