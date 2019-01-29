@@ -156,6 +156,7 @@
 				var activityIDList = [];
 				var listItem = [];
 				server_url="http://172.19.240.64:8080";
+				// server_url="http://192.168.0.105:8080";
 				type_select=doc.getElementById('select-type');
 				add_activity = doc.getElementById('activity-add');
 				type_select.addEventListener('change',function(e){
@@ -163,7 +164,20 @@
 				})
 				add_activity.addEventListener('click',function(e){
 					// 跳转到添加活动页面...
-					console.log("点击按钮");
+					console.log("create activity");
+					$.openWindow({
+						url: 'createActivity.html',
+						id: "create_activity_"+Date.parse(new Date()),
+						preload: true,
+						show: {
+							aniShow: 'pop-in'
+						},
+						extras: {
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
 				})
 				getActivityList(type_select.value);
 				
