@@ -122,6 +122,7 @@
 							exit_activity.style.display="block";
 							exit_activity.addEventListener('tap', function(event) {
 								alert("退出活动按钮（功能未实现）");
+								
 							},false);
 							alert("参加活动成功!");
 						},
@@ -149,7 +150,41 @@
 				},false);
 				finish_activity=doc.getElementById("finish_activity");
 				finish_activity.addEventListener('tap', function(event) {
-					alert("结束活动按钮（功能未实现）");
+					$.ajax(server_url+'/activity/endActivityById',{
+						data:{
+							userId: user_id,
+							activityId: plus.webview.currentWebview().activity_id
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:5000,//超时时间设置为5秒；
+						success:function(response){
+							var str = JSON.stringify(response);
+							console.log(str);
+							
+							if(response==true){
+								//exit_activity.style.display="block";
+								console.log('yes');
+							}
+							else{
+								//participate_activity.style.display="block";
+								console.log('no');
+							}
+							
+						},
+						error:function(xhr,type,errorThrown){
+							console.log(xhr.status);
+							if(xhr.status==0){
+								alert("网络错误");
+							}
+							else if(xhr.status==500){
+								alert("错误的userId或activityId");
+							}
+							else{
+								alert("未知错误");
+							}
+						}
+					});
 				},false);
 				
 				// 根据activityId初始化界面

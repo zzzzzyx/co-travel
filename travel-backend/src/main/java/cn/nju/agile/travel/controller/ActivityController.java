@@ -63,6 +63,15 @@ public class ActivityController {
         return activityService.getActivityByActivityName(activityName);
     }
 
+    @RequestMapping(value="/endActivityById")
+    @ResponseBody
+    public Boolean endActivityById(HttpServletRequest request){
+        Long activityId=Long.parseLong(request.getParameter("activityId"));
+        Long userId = Long.parseLong(request.getParameter("userId"));
+        System.out.println(activityId);
+        return activityService.endActivityByActivityId(activityId);
+    }
+
 
     @RequestMapping(value="/findAllByCategory")
     @ResponseBody

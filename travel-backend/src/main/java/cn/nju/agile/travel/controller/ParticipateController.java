@@ -51,7 +51,10 @@ public class ParticipateController {
 		return participateService.addParticipate(participate);
 		
 	}
-	
+
+
+
+
 	@RequestMapping(value="/ifUserParticipated")
     @ResponseBody
     public boolean ifUserParticipated(HttpServletRequest request) {
