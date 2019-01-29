@@ -28,10 +28,10 @@
 	</style>
 </head>
 <body>
-<header class="mui-bar mui-bar-nav">
+<!-- <header class="mui-bar mui-bar-nav">
     <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
     <h1 class="mui-title">活动列表</h1>
-</header>
+</header> -->
 <div class="mui-content">
     <form id="choose-activity-type" class="mui-input-group">
         <div class="mui-input-row">
@@ -138,13 +138,13 @@
 						console.log(activityIDList[index]);
 						$.openWindow({
 							url: 'activity_detail.html',
-							id: activityIDList[index],
+							id: 'activity_detail_'+activityIDList[index],
 							preload: true,
 							show: {
 								aniShow: 'pop-in'
 							},
 							extras: {
-								activity_id: "1002"
+								activity_id: activityIDList[index]
 							},
 							waiting: {
 								autoShow: false
