@@ -1,6 +1,6 @@
 (function($, owner) {
 	var HOST = "http://172.19.240.64:8080";
-	// var HOST = "http://localhost:8080";
+	// var HOST = "http://192.168.0.105:8080";
 	var LOGIN = "/user/login";
 	var REGISTER = "/user/register";
 	var SAVE_ACTIVITY = "/activity/save";
@@ -74,7 +74,7 @@
 	owner.createState = function(userInfo, callback) {
 		var state = owner.getState();
 		
-		console.log(userInfo);
+		console.log(userInfo.user);
 		
 		state.userId = userInfo.userId;
 		state.userName = userInfo.userName;
