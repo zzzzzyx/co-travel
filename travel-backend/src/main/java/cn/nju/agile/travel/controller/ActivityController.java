@@ -65,10 +65,10 @@ public class ActivityController {
 
     @RequestMapping(value="/endActivityById")
     @ResponseBody
-    public Boolean endActivityById(HttpServletRequest request){
+    public Integer endActivityById(HttpServletRequest request){
         Long activityId=Long.parseLong(request.getParameter("activityId"));
         Long userId = Long.parseLong(request.getParameter("userId"));
-        System.out.println(activityId);
+        System.out.println("activityID:"+activityId);
         return activityService.endActivityByActivityId(activityId);
     }
 

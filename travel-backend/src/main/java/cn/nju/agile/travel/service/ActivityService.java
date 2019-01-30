@@ -34,7 +34,7 @@ public class ActivityService {
 
 	public List<Activity> findAll(){ return activityRepository.findAll();}
 
-	public Boolean endActivityByActivityId(Long activityId){
+	public Integer endActivityByActivityId(Long activityId){
 		return activityRepository.updateActivityByActivityId(activityId);
 	}
 }

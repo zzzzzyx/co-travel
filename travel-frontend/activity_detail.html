@@ -95,7 +95,7 @@
 				// server_url="http://192.168.0.105:8080";
 				
 				// 测试用的user_id
-				user_id=1003;
+				user_id=1002;
 				
 				activity_name=doc.getElementById("activity_name");
 				activity_organizer=doc.getElementById("activity_organizer");
@@ -151,6 +151,8 @@
 				},false);
 				finish_activity=doc.getElementById("finish_activity");
 				finish_activity.addEventListener('tap', function(event) {
+					console.log("user_id"+user_id);
+					console.log("activityId"+ plus.webview.currentWebview().activity_id);
 					$.ajax(server_url+'/activity/endActivityById',{
 						data:{
 							userId: user_id,
@@ -163,9 +165,9 @@
 							var str = JSON.stringify(response);
 							console.log(str);
 							
-							if(response==true){
-								//exit_activity.style.display="block";
-								console.log('yes');
+							if(response==1){
+								finish_activity.style.display="block";
+								alert("成功结束活动");
 							}
 							else{
 								//participate_activity.style.display="block";

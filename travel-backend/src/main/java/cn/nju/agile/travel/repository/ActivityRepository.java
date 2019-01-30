@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import cn.nju.agile.travel.entity.Activity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,13 +15,14 @@ import java.util.List;
 public interface ActivityRepository extends JpaRepository<Activity, Long>{
 	
 	Activity getActivityByActivityName(String activityName);
-
 	List<Activity> findAllByCategory(String Category);
 
 	List<Activity> findAll();
 
 	@Modifying
-	@Query("update Activity act set act.activityStatus = finished where act.id = id")
-	Boolean updateActivityByActivityId(@Param(value="id") Long activityId);
+	@Transactional
+	@Query("update Activity set activityStatus = 'finished' where id =?1")
+	Integer updateActivityByActivityId(Long id);
+
 
 }
