@@ -4,26 +4,26 @@ spring:
     auto: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://172.19.240.64:3306/travel?characterEncoding=UTF-8&useUnicode=true&serverTimezone=GMT
-    username: travel-dev
-    password: 123456
-#    url: jdbc:mysql://localhost:3306/travel?characterEncoding=UTF-8&useUnicode=true&serverTimezone=GMT
-#    username: root
+#    url: jdbc:mysql://172.19.240.64:3306/travel?characterEncoding=UTF-8&useUnicode=true&serverTimezone=GMT
+#    username: travel-dev
 #    password: 123456
+    url: jdbc:mysql://localhost:3306/travel?characterEncoding=UTF-8&useUnicode=true&serverTimezone=GMT
+    username: root
+    password: 123456
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
-  redis:
-    host: 172.19.240.64
-    port: 6379
-    password: travel-dev-c7we89c7w98e7vw987vwe9v
-    timeout: 3600
 #  redis:
-#    host: 127.0.0.1
+#    host: 172.19.240.64
 #    port: 6379
-#    password: 123456
+#    password: travel-dev-c7we89c7w98e7vw987vwe9v
 #    timeout: 3600
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 123456
+    timeout: 3600
 
   session:
     store-type: redis
