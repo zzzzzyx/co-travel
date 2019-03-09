@@ -138,18 +138,31 @@
 							registrationDeadline: registrationDeadlineBox.value,
 							startTime: startTimeBox.value,
 							endTime: endTimeBox.value,
-							detail: detailBox.value
+							detail: detailBox.value,
+							user_id: app.getState().userId
 						};
 						app.save_activity(loginInfo, function(err) {
-							if (err) {
-								console.log("good")
-								plus.nativeUI.toast(err);
-								return;
-							}
+// 							if (err) {
+// 								console.log("good")
+// 								plus.nativeUI.toast(err);
+// 								return;
+// 							}
 							console.log("good")
-							toMain();
+							$.openWindow({
+								url: 'activityList.html',
+								id: "activityList"+Date.parse(new Date()),
+								preload: true,
+								show: {
+									aniShow: 'pop-in'
+								},
+								extras: {
+								},
+								waiting: {
+									autoShow: false
+								}
+							});
 						});
-						window.location.href="subpages/user/user.html";
+						// window.location.href="subpages/user/user.html";
 					});
 					$.enterfocus('#login-form input', function() {
 						$.trigger(loginButton, 'tap');

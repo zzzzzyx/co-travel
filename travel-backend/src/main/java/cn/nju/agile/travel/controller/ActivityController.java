@@ -63,6 +63,16 @@ public class ActivityController {
         return activityService.getActivityByActivityName(activityName);
     }
 
+    @RequestMapping(value="/getActivityByOrganizerId")
+    @ResponseBody
+    public List<Activity> getActivityByOrganizerId(HttpServletRequest request){
+        String organizer_id=request.getParameter("organizer_id");
+        if (organizer_id.equals("undefined")){
+            return activityService.getActivityByOrganizerId("1002");
+        }
+        return activityService.getActivityByOrganizerId(organizer_id);
+    }
+
     @RequestMapping(value="/endActivityById")
     @ResponseBody
     public Integer endActivityById(HttpServletRequest request){
@@ -87,18 +97,17 @@ public class ActivityController {
 
     @PostMapping(value="/save")
     @ResponseBody
-    public Activity saveActivity(HttpSession session, HttpServletRequest request) throws ParseException {
+    public Activity saveActivity(HttpServletRequest request) throws ParseException {
         String activityName = request.getHeader("activityName");
         String startTime = request.getHeader("startTime");
         String endTime = request.getHeader("endTime");
         String category = request.getHeader("category");
         String location = request.getHeader("location");
         String detail = request.getHeader("detail");
-        String organizerId = String.valueOf(session.getAttribute(UserConstant.USER_ID));
+        String organizerId = request.getHeader("user_id");
         String registrationDeadline = request.getHeader("registrationDeadline");
         String activityStatus = "registering";
         System.out.println(organizerId);
-        organizerId = "1002";
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
         Activity newActivity = new Activity( activityName,  f.parse(startTime),  f.parse(endTime),  category,  location,  detail,  Long.parseLong(organizerId),  f.parse(registrationDeadline),  activityStatus);

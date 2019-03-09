@@ -24,6 +24,12 @@ public class ActivityService {
 		
 	}
 
+	public List<Activity> getActivityByOrganizerId(String organizer_id) {
+
+		return activityRepository.findAllByOrganizerId(Long.parseLong(organizer_id));
+
+	}
+
     public void save(Activity newActivity) {
 		activityRepository.save(newActivity);
     }
