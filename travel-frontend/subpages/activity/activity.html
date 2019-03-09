@@ -29,46 +29,6 @@
 					在这里您可以看到所有你发起和参与的活动。
 				</div>
 				<ul class="mui-table-view mui-table-view-chevron">
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 1</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 2</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 3</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 4</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 5</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 6</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 7</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 8</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 9</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 10</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 11</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 12</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 13</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 14</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 15</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 16</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 17</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 18</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 19</a>
-					</li>
-					<li class="mui-table-view-cell"><a href="" class="mui-navigate-right">Item 20</a>
-					</li>
 				</ul>
 			</div>
 		</div>
@@ -83,10 +43,10 @@
 					down: {
 						callback: pulldownRefresh
 					},
-					up: {
-						contentrefresh: '正在加载...',
-						callback: pullupRefresh
-					}
+// 					up: {
+// 						contentrefresh: '正在加载...',
+// 						callback: pullupRefresh
+// 					}
 				}
 			});
 			
@@ -95,7 +55,6 @@
 			// server_url="http://192.168.0.105:8080";
 			
 			function getActivityList(){
-				console.log("getActivityListgetActivityListgetActivityList")
 				$.ajax(server_url+'/activity/getActivityByOrganizerId',{
 					data:{
 						organizer_id: app.getState().userId
@@ -104,7 +63,28 @@
 					type:'post',//HTTP请求类型
 					timeout:5000,//超时时间设置为5秒；
 					success:function(response){
-						console.log("good")
+						var table = document.body.querySelector('.mui-table-view');
+						var cells = document.body.querySelectorAll('.mui-table-view-cell');
+						
+						while(table.hasChildNodes()) //当elem下还存在子节点时 循环继续
+							{
+								table.removeChild(table.firstChild);
+							}
+					
+						response.forEach(function(value,i){
+							console.log(JSON.stringify(value));
+							console.log(value["id"])
+							var li = document.createElement('li');
+							li.className = 'mui-table-view-cell';
+							li.innerHTML = '<a class="mui-navigate-right activity-item"><strong style="color:blue">[我发起的]</strong> ' + value['activityName'] + '</a>';
+							//下拉刷新，新纪录插到最前面；
+							table.insertBefore(li, table.firstChild);
+						})
+						listItem = doc.getElementsByClassName('activity-item');
+						for(var i=0; i<listItem.length;i++){
+							clickActivity(i);
+						}
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 					},
 					error:function(xhr,type,errorThrown){
 						console.log(xhr.status);
@@ -121,46 +101,51 @@
 				});
 			}
 			getActivityList();
+			function clickActivity(index){
+				listItem[index].addEventListener('tap',function(event){
+					// console.log(activityIDList[index]);
+					$.openWindow({
+						url: '../../activity_detail.html',
+						id: 'activity_detail_'+1001,
+						preload: true,
+						show: {
+							aniShow: 'pop-in'
+						},
+						extras: {
+							// activity_id: activityIDList[index]
+							activity_id: 1001
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
+				})
+			}
 			/**
 			 * 下拉刷新具体业务实现
 			 */
 			function pulldownRefresh() {
 				setTimeout(function() {
-					var table = document.body.querySelector('.mui-table-view');
-					var cells = document.body.querySelectorAll('.mui-table-view-cell');
 					getActivityList();
-					console.log("good")
-					for (var i = cells.length, len = i + 3; i < len; i++) {
-						
-						
-						var li = document.createElement('li');
-						li.className = 'mui-table-view-cell';
-						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
-						//下拉刷新，新纪录插到最前面；
-						table.insertBefore(li, table.firstChild);
-						
-						
-					}
-					mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 				}, 1000);
 			}
 			var count = 0;
 			/**
 			 * 上拉加载具体业务实现
 			 */
-			function pullupRefresh() {
-				setTimeout(function() {
-					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
-					var table = document.body.querySelector('.mui-table-view');
-					var cells = document.body.querySelectorAll('.mui-table-view-cell');
-					for (var i = cells.length, len = i + 20; i < len; i++) {
-						var li = document.createElement('li');
-						li.className = 'mui-table-view-cell';
-						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
-						table.appendChild(li);
-					}
-				}, 1000);
-			}
+// 			function pullupRefresh() {
+// 				setTimeout(function() {
+// 					mui('#pullrefresh').pullRefresh().endPullupToRefresh((++count > 2)); //参数为true代表没有更多数据了。
+// 					var table = document.body.querySelector('.mui-table-view');
+// 					var cells = document.body.querySelectorAll('.mui-table-view-cell');
+// 					for (var i = cells.length, len = i + 20; i < len; i++) {
+// 						var li = document.createElement('li');
+// 						li.className = 'mui-table-view-cell';
+// 						li.innerHTML = '<a class="mui-navigate-right">Item ' + (i + 1) + '</a>';
+// 						table.appendChild(li);
+// 					}
+// 				}, 1000);
+// 			}
 		}(mui, document));
 		</script>
 	</body>
