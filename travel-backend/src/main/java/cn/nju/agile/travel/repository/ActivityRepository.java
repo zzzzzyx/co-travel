@@ -25,4 +25,5 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
 	Integer updateActivityByActivityId(Long id);
 
 
+	List<Activity> findAllByOrganizerId(Long organizer_id);
 }

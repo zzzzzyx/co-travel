@@ -75,6 +75,26 @@ public class UserController {
         return result.toJsonString();
     }
 
+    @PostMapping("/update")
+    public User update(HttpServletRequest request) {
+        String userId = request.getParameter("userid");
+        User oldUser=userService.getUserById(Long.parseLong(userId));
+        String userName = request.getParameter("username");
+        String password = oldUser.getPwd();
+        String sex = request.getParameter("sex");
+        String university = request.getParameter("university");
+
+        User newUser = new User();
+        newUser.setId(Long.parseLong(userId));
+        newUser.setUserName(userName);
+        newUser.setPwd(password);
+        newUser.setSex(sex);
+        newUser.setUniversity(university);
+
+        return userService.addUser(newUser);
+
+    }
+
     @Secured
     @GetMapping(value = "/get")
     public String get(HttpServletRequest request){

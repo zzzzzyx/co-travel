@@ -137,7 +137,7 @@
 					listItem[index].addEventListener('tap',function(event){
 						console.log(activityIDList[index]);
 						$.openWindow({
-							url: 'activity_detail.html',
+							url: 'activityDetail.html',
 							id: 'activity_detail_'+activityIDList[index],
 							preload: true,
 							show: {
@@ -155,6 +155,7 @@
 				
 				var activityIDList = [];
 				var listItem = [];
+				
 				server_url=app.getHost();
 				type_select=doc.getElementById('select-type');
 				add_activity = doc.getElementById('activity-add');
@@ -180,8 +181,10 @@
 				})
 				getActivityList(type_select.value);
 				
-				
 			});
+			window.addEventListener('refresh',function(){
+				 location.reload();//父页面仅仅是刷新页面，当然也可以自定义逻辑函数写在里面 
+			})
 		}(mui, document));
 	</script>
 </html>                                                                                                                                                                                        

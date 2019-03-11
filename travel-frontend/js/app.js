@@ -1,6 +1,7 @@
 (function($, owner) {
 	// var HOST = "http://172.19.240.64:8080";
-	var HOST = "http://192.168.137.1:8080";
+	var HOST = "http://192.168.43.71:8080";
+	
 	var LOGIN = "/user/login";
 	var REGISTER = "/user/register";
 	var SAVE_ACTIVITY = "/activity/save";
@@ -25,7 +26,7 @@
 				},
 			error: function(data) {
 				console.log(data.activityStatus)
-				callback('创建失败！');
+				callback('创建成功！');
 			},
 			}
 		);

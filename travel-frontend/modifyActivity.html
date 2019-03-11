@@ -62,7 +62,7 @@
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left" style="touch-action: none;"></a>
-			<h1 class="mui-title">创建活动</h1>
+			<h1 class="mui-title">修改活动</h1>
 		</header>
 		<div class="mui-content">
 			<form id='lcreate-activity-form' class="mui-input-group">
@@ -101,7 +101,7 @@
 				</div>
 			</form>
 			<div class="mui-content-padded">
-				<button id='login' class="mui-btn mui-btn-block mui-btn-primary">创建</button>
+				<button id='modify' class="mui-btn mui-btn-block mui-btn-primary">修改</button>
 				</div>
 			</div>
 		</div>
@@ -111,16 +111,17 @@
 		<script>
 			(function($, doc) {
 				$.init({
-					statusBarBackground: '#f7f7f7'
+					beforeback: function(){
+						 var list = plus.webview.currentWebview().opener();
+						 mui.fire(list, 'refresh');
+						return true;
+					}
 				});
 				$.plusReady(function() {
 
-					mui('body').on( 'tap' , 'a' , function(){
-						document.location.href=this.href;
-					});
-
+					server_url=app.getHost();
 					
-					var loginButton = doc.getElementById('login');
+					var modifyButton = doc.getElementById('modify');
 					var activityNameBox = doc.getElementById('activityName');
 					var locationBox = doc.getElementById('location');
 					var categoryBox = doc.getElementById("category");
@@ -128,8 +129,42 @@
 					var startTimeBox = doc.getElementById("startTime");
 					var endTimeBox = doc.getElementById("endTime");
 					var detailBox = doc.getElementById('detail');
-					loginButton.addEventListener('tap', function(event) {
-						var loginInfo = {
+					
+					var activity_id=plus.webview.currentWebview().activity_id;
+					var activity_name=plus.webview.currentWebview().activity_name;
+					var activity_organizer=plus.webview.currentWebview().activity_organizer;
+					var activity_start_time=plus.webview.currentWebview().activity_start_time;
+					var activity_end_time=plus.webview.currentWebview().activity_end_time;
+					var activity_registration_deadline=plus.webview.currentWebview().activity_registration_deadline;
+					var activity_status=plus.webview.currentWebview().activity_status;
+					var activity_status_eng="registering";
+					var activity_category=plus.webview.currentWebview().activity_category;
+					var activity_location=plus.webview.currentWebview().activity_location;
+					var activity_detail=plus.webview.currentWebview().activity_detail;
+					
+					activityNameBox.value=activity_name;
+					locationBox.value=activity_location;
+					switch(activity_category){
+						case "博物馆": categoryBox.options[0].selected = true;break;
+						case "野餐": categoryBox.options[1].selected = true;break;
+						case "桌游": categoryBox.options[2].selected = true;break;
+						default: categoryBox.options[3].selected = true;
+					}
+					switch(activity_status){
+						case "已取消": activity_status_eng = "canceled";break;
+						case "已结束": activity_status_eng = "finished";break;
+						case "进行中": activity_status_eng = "underway";break;
+						case "报名结束": activity_status_eng = "registration_closed";break;
+						case "报名中": activity_status_eng = "registering";break;
+					}
+					registrationDeadlineBox.value=activity_registration_deadline.substring(0,10)+"T"+activity_registration_deadline.substring(11,19);
+					startTimeBox.value=activity_start_time.substring(0,10)+"T"+activity_start_time.substring(11,19);
+					endTimeBox.value=activity_end_time.substring(0,10)+"T"+activity_end_time.substring(11,19);
+					detailBox.value=activity_detail;
+					
+					modifyButton.addEventListener('tap', function(event) {
+						var updateInfo = {
+							activityId: activity_id,
 							activityName: activityNameBox.value,
 							location: locationBox.value,
 							category: categoryBox.value,
@@ -137,36 +172,38 @@
 							startTime: startTimeBox.value,
 							endTime: endTimeBox.value,
 							detail: detailBox.value,
-							user_id: app.getState().userId
+							user_id: app.getState().userId,
+							status: activity_status_eng
 						};
-						app.save_activity(loginInfo, function(err) {
-// 							if (err) {
-// 								console.log("good")
-// 								plus.nativeUI.toast(err);
-// 								return;
-// 							}
-							console.log("good")
-							$.openWindow({
-								url: 'activityList.html',
-								id: "activityList"+Date.parse(new Date()),
-								preload: true,
-								show: {
-									aniShow: 'pop-in'
+						$.ajax(server_url+'/activity/update', {
+							type: 'post',
+							timeout: 3000,
+							data: updateInfo,
+							dataType :"json",
+							success: function(data) {
+									alert('修改成功！');
 								},
-								extras: {
-								},
-								waiting: {
-									autoShow: false
+							error: function(xhr,type,errorThrown) {
+								console.log(xhr.status);
+								if(xhr.status==0){
+									alert("网络错误");
 								}
-							});
-						});
-						// window.location.href="subpages/user/user.html";
+								else if(xhr.status==500){
+									alert("错误数据");
+								}
+								else{
+									alert("未知错误");
+								}
+							},
+							}
+						);
 					});
 					$.enterfocus('#login-form input', function() {
 						$.trigger(loginButton, 'tap');
 					});
 
 				});
+				
 			}(mui, document));
 		</script>
 	</body>

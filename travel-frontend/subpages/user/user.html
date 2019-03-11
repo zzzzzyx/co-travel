@@ -34,20 +34,20 @@
 	<body>
 		<div class="mui-content">
 			<div class="title">
-				您的账户状态：<b style=" color: green">已登录</b> <u style="float:right; color: blue" id="renew">点此刷新</u>
+				您的账户状态：<b style=" color: green">已登录</b><u style="color: blue; margin-left: 10px;" id="modify_userinfo">修改</u> <u style="float:right; color: blue" id="renew">点此刷新</u>
 			</div>
 			<ul class="mui-table-view">
 				<li class="mui-table-view-cell">
 					<label class="left_label">用户名</label>
-					<label class="right_label" id="username">网络错误！</label>
+					<label class="right_label" id="username">zyx</label>
 				</li>
 				<li class="mui-table-view-cell">
 					<label class="left_label">注册院校</label>
-					<label class="right_label" id="university">网络错误！</label>
+					<label class="right_label" id="university">南京大学</label>
 				</li>
 				<li class="mui-table-view-cell">
 					<label class="left_label">性别</label>
-					<label class="right_label" id="sex">网络错误！</label>
+					<label class="right_label" id="sex">男</label>
 				</li>
 			</ul>
 			<ul class="mui-table-view" style="margin-top: 25px;">
@@ -81,7 +81,25 @@
 	// 			mui.fire(main, 'gohome');
 	// 
 	// 		});
-			
+			document.getElementById("modify_userinfo").addEventListener("click", function(){
+				$.openWindow({
+					url: '../../modifyUserInfo.html',
+					id: "modify_userinfo_"+app.getState().userId,
+					preload: true,
+					show: {
+						aniShow: 'pop-in'
+					},
+					extras: {
+						user_id: app.getState().userId,
+						user_name: app.getState().userName,
+						sex: app.getState().sex,
+						university: app.getState().university
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
 			document.getElementById("renew").addEventListener("click", function(){
 				state = JSON.parse(localStorage.getItem("$state"))
 				console.log("renew");
@@ -106,6 +124,9 @@
 					}
 				}, 'div')
 			});
+			window.addEventListener('refresh',function(){
+				 location.reload();
+			})
 		}(mui, document));
 			
 	</script>

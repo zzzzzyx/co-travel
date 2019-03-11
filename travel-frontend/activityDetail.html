@@ -78,8 +78,9 @@
 			<div class="mui-content-padded" style="margin: 20px;">
 				<button id="participate_activity" class="mui-btn mui-btn-block mui-btn-primary">参加活动</button>
 				<button id="exit_activity" class="mui-btn mui-btn-block mui-btn-primary">退出活动</button>
-				<button id="cancel_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: left; margin-left: 15px; margin-bottom: 20px;">取消活动</button>
-				<button id="finish_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: right; margin-right: 15px; margin-bottom: 20px;">结束活动</button>
+				<button id="cancel_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: left; margin-left: 15px; margin-bottom: 20px; width: 100px;">取消活动</button>
+				<button id="modify_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: left; margin-left: 20px; margin-bottom: 20px; width: 100px;">修改活动</button>
+				<button id="finish_activity" class="mui-btn mui-btn-block mui-btn-primary" style="float: left; margin-left: 20px; margin-right: 15px; margin-bottom: 20px; width: 100px;">结束活动</button>
 			</div>
 		</div>
 	</body>
@@ -88,16 +89,23 @@
 	<script src="js/app.js"></script>
 	<script>
 		(function($, doc) {
-			$.init();
+			$.init({
+				beforeback: function(){
+					 var list = plus.webview.currentWebview().opener();
+					 mui.fire(list, 'refresh');
+					return true;
+				}
+			});
 			$.plusReady(function() {
 				
 				server_url=app.getHost();
 				
-				// 测试用的user_id
-				user_id=1002;
+				user_id=app.getState().userId;
+				console.log("activity_detail: user_id="+user_id);
 				
 				activity_name=doc.getElementById("activity_name");
 				activity_organizer=doc.getElementById("activity_organizer");
+				activity_organizer_id=1001;
 				activity_start_time=doc.getElementById("activity_start_time");
 				activity_end_time=doc.getElementById("activity_end_time");
 				activity_registration_deadline=doc.getElementById("activity_registration_deadline");
@@ -147,6 +155,32 @@
 				cancel_activity=doc.getElementById("cancel_activity");
 				cancel_activity.addEventListener('tap', function(event) {
 					alert("取消活动按钮（功能未实现）");
+				},false);
+				modify_activity=doc.getElementById("modify_activity");
+				modify_activity.addEventListener('tap', function(event) {
+					$.openWindow({
+						url: 'modifyActivity.html',
+						id: 'modifyActivity_'+plus.webview.currentWebview().activity_id,
+						preload: true,
+						show: {
+							aniShow: 'pop-in'
+						},
+						extras: {
+							activity_id: plus.webview.currentWebview().activity_id,
+							activity_name: activity_name.innerText,
+							activity_organizer: activity_organizer_id,
+							activity_start_time: activity_start_time.innerText,
+							activity_end_time: activity_end_time.innerText,
+							activity_registration_deadline: activity_registration_deadline.innerText,
+							activity_status: activity_status.innerText,
+							activity_category: activity_category.innerText,
+							activity_location: activity_location.innerText,
+							activity_detail: activity_detail.innerText
+						},
+						waiting: {
+							autoShow: false
+						}
+					});
 				},false);
 				finish_activity=doc.getElementById("finish_activity");
 				finish_activity.addEventListener('tap', function(event) {
@@ -201,6 +235,7 @@
 					success:function(response){
 						activity_name.innerText=response["activity"]["activityName"];
 						activity_organizer.innerText=response["organizer"]["userName"];
+						activity_organizer_id=response["organizer"]["id"];
 						activity_start_time.innerText=response["activity"]["startTime"].substring(0,19).replace(/T/g," ");
 						activity_end_time.innerText=response["activity"]["endTime"].substring(0,19).replace(/T/g," ");
 						activity_registration_deadline.innerText=response["activity"]["registrationDeadline"].substring(0,19).replace(/T/g," ");
@@ -253,6 +288,7 @@
 						// 根据user_id控制按钮类型
 						if(user_id==response["activity"]["organizerId"]){
 							cancel_activity.style.display="block";
+							modify_activity.style.display="block";
 							finish_activity.style.display="block";
 						}
 						else{
@@ -306,6 +342,9 @@
 				});
 				
 			});
+			window.addEventListener('refresh',function(){
+				 location.reload();//父页面仅仅是刷新页面，当然也可以自定义逻辑函数写在里面 
+			})
 		}(mui, document));
 	</script>
 </html>
