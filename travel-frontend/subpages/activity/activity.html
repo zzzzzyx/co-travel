@@ -49,7 +49,6 @@
 // 					}
 				}
 			});
-			
 			var server_url = "http://localhost:8080";
 			// server_url="http://172.19.240.64:8080";
 			// server_url="http://192.168.0.105:8080";
@@ -70,20 +69,55 @@
 							{
 								table.removeChild(table.firstChild);
 							}
-					
+							
+						
 						response.forEach(function(value,i){
-							console.log(JSON.stringify(value));
-							console.log(value["id"])
 							var li = document.createElement('li');
 							li.className = 'mui-table-view-cell';
 							li.innerHTML = '<a class="mui-navigate-right activity-item"><strong style="color:blue">[我发起的]</strong> ' + value['activityName'] + '</a>';
 							//下拉刷新，新纪录插到最前面；
+							clickActivity(li,value["id"]);
 							table.insertBefore(li, table.firstChild);
 						})
-						listItem = doc.getElementsByClassName('activity-item');
-						for(var i=0; i<listItem.length;i++){
-							clickActivity(i);
+						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
+						getParticipateList()
+					},
+					error:function(xhr,type,errorThrown){
+						console.log(xhr.status);
+						if(xhr.status==0){
+							alert("网络错误");
 						}
+						else if(xhr.status==500){
+							alert("错误的userId或activityId");
+						}
+						else{
+							alert("未知错误");
+						}
+					},
+				});
+			}
+			function getParticipateList(){
+				$.ajax(server_url+'/participate/getParticipateByUserId',{
+					data:{
+						organizer_id: app.getState().userId
+					},
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					timeout:5000,//超时时间设置为5秒；
+					success:function(response){
+						var table = document.body.querySelector('.mui-table-view');
+						var cells = document.body.querySelectorAll('.mui-table-view-cell');
+				
+						response.forEach(function(value,i){
+							console.log(JSON.stringify(value));
+							console.log(value["activityId"])
+							var li = document.createElement('li');
+							li.className = 'mui-table-view-cell';
+							li.innerHTML = '<a class="mui-navigate-right activity-item"><strong style="color:green">[我参与的]</strong> ' + value['activityName'] + '</a>';
+							//下拉刷新，新纪录插到最前面；
+							clickActivity(li,value["activityId"]);
+							table.insertBefore(li, table.firstChild);
+						})
 						mui('#pullrefresh').pullRefresh().endPulldownToRefresh(); //refresh completed
 					},
 					error:function(xhr,type,errorThrown){
@@ -101,19 +135,17 @@
 				});
 			}
 			getActivityList();
-			function clickActivity(index){
-				listItem[index].addEventListener('tap',function(event){
-					// console.log(activityIDList[index]);
+			function clickActivity(li,id){
+				li.addEventListener('tap',function(event){
 					$.openWindow({
 						url: '../../activity_detail.html',
-						id: 'activity_detail_'+1001,
+						id: 'activity_detail_'+id,
 						preload: true,
 						show: {
 							aniShow: 'pop-in'
 						},
 						extras: {
-							// activity_id: activityIDList[index]
-							activity_id: 1001
+							activity_id: id
 						},
 						waiting: {
 							autoShow: false
