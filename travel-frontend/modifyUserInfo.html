@@ -110,6 +110,14 @@
 							data: modifyInfo,
 							dataType :"json",
 							success: function(data) {
+									var state = app.getState();
+									
+									state.userId = user_id;
+									state.userName = accountBox.value;
+									state.sex = sexBox.value;
+									state.university = universityBox.value;
+									
+									app.setState(state);
 									alert('修改成功！');
 								},
 							error: function(xhr,type,errorThrown) {
