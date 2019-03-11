@@ -96,6 +96,18 @@ public class ActivityController {
         return activityService.findAllByCategory(category);
     }
 
+    private Date parseByLength(String datestr) throws ParseException{
+        SimpleDateFormat f;
+        if(datestr.length()==23)
+            f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+        else if(datestr.length()==19)
+            f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        else
+            f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
+
+        return f.parse(datestr);
+    }
+
     @PostMapping(value = "/save")
     @ResponseBody
     public Activity saveActivity(HttpServletRequest request) throws ParseException {
@@ -109,25 +121,12 @@ public class ActivityController {
         String registrationDeadline = request.getHeader("registrationDeadline");
         String activityStatus = "registering";
         System.out.println(organizerId);
-        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
-        Activity newActivity = new Activity(activityName, f.parse(startTime), f.parse(endTime), category, location, detail, Long.parseLong(organizerId), f.parse(registrationDeadline), activityStatus);
+        Activity newActivity = new Activity(activityName, parseByLength(startTime), parseByLength(endTime), category, location, detail, Long.parseLong(organizerId), parseByLength(registrationDeadline), activityStatus);
         System.out.println(newActivity);
         activityService.save(newActivity);
         System.out.println("{\"code\":200,\"msg\":success}");
         return newActivity;
-    }
-
-    private Date parseByLength(String datestr) throws ParseException{
-        SimpleDateFormat f;
-        if(datestr.length()==23)
-            f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-        else if(datestr.length()==19)
-            f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        else
-            f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm");
-
-        return f.parse(datestr);
     }
 
     @PostMapping(value = "/update")
