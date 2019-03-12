@@ -25,6 +25,13 @@
 			background-color: #ffffff;
 			margin-top: 8px;
 		}
+		.mui-input-row label~input,.mui-input-row label~select{
+			float: left;
+			width: 50%
+		}
+		.mui-input-row{
+			margin:6px
+		}
 	</style>
 </head>
 <body>
@@ -46,7 +53,18 @@
                 <option value="tabletop_game">桌游</option>
                 <option value="others">其它</option>
             </select>
+			<button type="button" class="mui-btn mui-btn-primary" id = "activity_search_by_category">搜索</button>
         </div>
+		<div class="mui-input-row">
+		    <label>活动地点</label>
+			<input type="text" class="mui-input-clear mui-input" placeholder="选择活动地点" id = "input_location"/>
+		    <button type="button" class="mui-btn mui-btn-primary "  id = "activity_search_by_location">搜索</button>
+		</div>
+		<div class="mui-input-row">
+		    <label>活动时间</label>
+			<input type="datetime-local" placeholder="选择活动时间" id = "input_starttime"/>
+		    <button type="button" class="mui-btn mui-btn-primary"  id = "activity_search_by_starttime">搜索</button>
+		</div>
     </form>
     <div class="mui-content-padded" id="activity_list">
         <div class = "mui-card md-shadow activity-card" >
@@ -85,50 +103,60 @@
 		(function($, doc) {
 			$.init();
 			$.plusReady(function() {
-				function getActivityList(activity_category){
-					$.ajax(server_url+'/activity/findAllByCategory',{
+				function handleError(status){
+					console.log(status);
+					if(status==0){
+						alert("网络错误");
+					}
+					else if(status==500){
+						alert("错误的userId或activityId");
+					}
+					else{
+						alert("未知错误");
+					}
+				}
+				function handleSuccess(response){
+					var parent = doc.getElementById('activity_list');
+					parent.innerHTML = ""
+					var activitys = [];
+					activityIDList = [];
+					response.forEach(function(value,i){
+						console.log(JSON.stringify(value));
+						console.log(value["id"])
+						activityIDList.push(value["id"]);
+						activitys.push('<div class = "mui-card md-shadow activity-card" >');
+						activitys.push('<div class="mui-card-header   mui-content-padded" >');
+						activitys.push('<p class="mui-text-center"><strong class="text-strong title">'+ value["activityName"] +'</strong></p>');
+						activitys.push('<p> 开始于'+value["startTime"]+'</p>')
+						activitys.push('</div>')
+						activitys.push('<div class="mui-card-content mui-content-padded"> <p>'+ value["detail"] +'</p></div>')
+						activitys.push('<div class="mui-card-footer mui-content-padded"> <p> 报名截止时间：'+ value["registrationDeadline"] + '</p></div>')
+						activitys.push('</div>')
+					})
+					parent.innerHTML = parent.innerHTML + activitys.join('');			
+					
+					listItem = doc.getElementsByClassName('activity-card');
+					for(var i=0; i<listItem.length;i++){
+						clickActivity(i);
+					}
+				}
+				
+				function getActivityList(address,category,location,starttime){
+					
+					$.ajax(server_url+address,{
 						data:{
-							category: activity_category
+							category:category,
+							location:location,
+							startTime:starttime
 						},
 						dataType:'json',//服务器返回json格式数据
 						type:'post',//HTTP请求类型
 						timeout:5000,//超时时间设置为5秒；
 						success:function(response){
-							var parent = doc.getElementById('activity_list');
-							parent.innerHTML = ""
-							var activitys = [];
-							activityIDList = [];
-							response.forEach(function(value,i){
-								console.log(JSON.stringify(value));
-								console.log(value["id"])
-								activityIDList.push(value["id"]);
-								activitys.push('<div class = "mui-card md-shadow activity-card" >');
-								activitys.push('<div class="mui-card-header   mui-content-padded" >');
-								activitys.push('<p class="mui-text-center"><strong class="text-strong title">'+ value["activityName"] +'</strong></p>');
-								activitys.push('<p> 开始于'+value["startTime"]+'</p>')
-								activitys.push('</div>')
-								activitys.push('<div class="mui-card-content mui-content-padded"> <p>'+ value["detail"] +'</p></div>')
-								activitys.push('<div class="mui-card-footer mui-content-padded"> <p> 报名截止时间：'+ value["registrationDeadline"] + '</p></div>')
-								activitys.push('</div>')
-							})
-							parent.innerHTML = parent.innerHTML + activitys.join('');			
-							
-							listItem = doc.getElementsByClassName('activity-card');
-							for(var i=0; i<listItem.length;i++){
-								clickActivity(i);
-							}
+							handleSuccess(response)
 						},
 						error:function(xhr,type,errorThrown){
-							console.log(xhr.status);
-							if(xhr.status==0){
-								alert("网络错误");
-							}
-							else if(xhr.status==500){
-								alert("错误的userId或activityId");
-							}
-							else{
-								alert("未知错误");
-							}
+							handleError(xhr.status)
 						},
 					});
 				}
@@ -158,9 +186,25 @@
 				
 				server_url=app.getHost();
 				type_select=doc.getElementById('select-type');
+				input_location=doc.getElementById('input_location');
+				input_starttime=doc.getElementById('input_starttime');
 				add_activity = doc.getElementById('activity-add');
-				type_select.addEventListener('change',function(e){
-					getActivityList(type_select.value);
+				activity_search_by_category = doc.getElementById('activity_search_by_category')
+				activity_search_by_location = doc.getElementById('activity_search_by_location')
+				activity_search_by_starttime = doc.getElementById('activity_search_by_starttime')
+				
+// 				type_select.addEventListener('change',function(e){
+// 					getActivityList('/activity/findAllByCategory','category',type_select.value);
+// 				})
+				activity_search_by_category.addEventListener('click',function(e){
+					getActivityList('/activity/findAllByCategory',type_select.value,'','');
+				})
+				activity_search_by_location.addEventListener('click',function(e){
+					getActivityList('/activity/findAllByLocation','',input_location.value,'');
+				})
+				activity_search_by_starttime.addEventListener('click',function(e){
+					console.log(input_starttime.value)
+					getActivityList('/activity/findAllByStartTime','','',input_starttime.value);
 				})
 				add_activity.addEventListener('click',function(e){
 					// 跳转到添加活动页面...
@@ -179,7 +223,7 @@
 						}
 					});
 				})
-				getActivityList(type_select.value);
+				getActivityList('/activity/findAllByCategory',type_select.value,'','');
 				
 			});
 			window.addEventListener('refresh',function(){

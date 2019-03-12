@@ -1,5 +1,6 @@
 package cn.nju.agile.travel.controller;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -94,6 +95,30 @@ public class ActivityController {
             return activityService.findAll();
         }
         return activityService.findAllByCategory(category);
+    }
+
+    @RequestMapping(value = "/findAllByStartTime")
+    @ResponseBody
+    public List<Activity> findAllByStartTime(HttpServletRequest request) throws ParseException {
+        String startTime = request.getParameter("startTime");
+
+        System.out.println(startTime);
+        if (startTime.equals("all")) {
+            return activityService.findAll();
+        }
+        return activityService.findAllByStartTime(parseByLength(startTime));
+    }
+
+    @RequestMapping(value = "/findAllByLocation")
+    @ResponseBody
+    public List<Activity> findAllByLocation(HttpServletRequest request) {
+        String location = request.getParameter("location");
+
+        System.out.println(location);
+        if (location.equals("all")) {
+            return activityService.findAll();
+        }
+        return activityService.findAllByLocation(location);
     }
 
     private Date parseByLength(String datestr) throws ParseException{

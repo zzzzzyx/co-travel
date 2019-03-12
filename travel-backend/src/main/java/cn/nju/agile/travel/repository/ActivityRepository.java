@@ -10,12 +10,17 @@ import cn.nju.agile.travel.entity.Activity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Date;
 
 @Repository
 public interface ActivityRepository extends JpaRepository<Activity, Long>{
 	
 	Activity getActivityByActivityName(String activityName);
 	List<Activity> findAllByCategory(String Category);
+
+	List<Activity> findAllByLocation(String Location);
+
+	List<Activity> findAllByStartTime(Date startTime);
 
 	List<Activity> findAll();
 

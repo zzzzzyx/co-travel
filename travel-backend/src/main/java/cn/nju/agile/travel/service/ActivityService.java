@@ -7,6 +7,7 @@ import cn.nju.agile.travel.entity.Activity;
 import cn.nju.agile.travel.repository.ActivityRepository;
 
 import java.util.List;
+import java.util.Date;
 
 @Service
 public class ActivityService {
@@ -36,6 +37,14 @@ public class ActivityService {
 
     public List<Activity> findAllByCategory(String category){
 		return activityRepository.findAllByCategory(category);
+	}
+
+	public List<Activity> findAllByLocation(String location){
+		return activityRepository.findAllByLocation(location);
+	}
+
+	public List<Activity> findAllByStartTime(Date startTime){
+		return activityRepository.findAllByStartTime(startTime);
 	}
 
 	public List<Activity> findAll(){ return activityRepository.findAll();}
