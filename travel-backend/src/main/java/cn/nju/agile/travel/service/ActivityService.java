@@ -52,6 +52,9 @@ public class ActivityService {
 	public Integer endActivityByActivityId(Long activityId){
 		return activityRepository.updateActivityByActivityId(activityId);
 	}
-
-
+    
+    
+    public void cancel(Long activityId, Long organizerId) {
+		activityRepository.cancelActivity(activityId, organizerId);
+    }
 }

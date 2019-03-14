@@ -176,5 +176,13 @@ public class ActivityController {
         System.out.println("{\"code\":200,\"msg\":success}");
         return newActivity;
     }
-
+    
+    @PostMapping(value = "cancel")
+    @ResponseBody
+    public void cancelActivity(HttpServletRequest request){
+        Long activityId = Long.parseLong(request.getParameter("activityId"));
+        Long organizerId = Long.parseLong(request.getParameter("userId"));
+        
+        activityService.cancel(activityId, organizerId);
+    }
 }

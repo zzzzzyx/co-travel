@@ -128,10 +128,6 @@
 						success:function(response){
 							participate_activity.style.display="none";
 							exit_activity.style.display="block";
-							exit_activity.addEventListener('tap', function(event) {
-								alert("退出活动按钮（功能未实现）");
-								
-							},false);
 							alert("参加活动成功!");
 						},
 						error:function(xhr,type,errorThrown){
@@ -150,11 +146,60 @@
 				},false);
 				exit_activity=doc.getElementById("exit_activity");
 				exit_activity.addEventListener('tap', function(event) {
-					alert("退出活动按钮（功能未实现）");
+					$.ajax(server_url+'/participate/removeParticipate',{
+						data:{
+							userId: user_id,
+							activityId: plus.webview.currentWebview().activity_id
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:5000,//超时时间设置为5秒；
+						success:function(response){
+							alert("退出活动成功!");
+							participate_activity.style.display="block";
+							exit_activity.style.display="none";
+						},
+						error:function(xhr,type,errorThrown){
+							console.log(xhr.status);
+							if(xhr.status==0){
+								alert("网络错误");
+							}
+							else if(xhr.status==500){
+								alert("错误的userId或activityId");
+							}
+							else{
+								alert("未知错误");
+							}
+						},
+					});
 				},false);
 				cancel_activity=doc.getElementById("cancel_activity");
 				cancel_activity.addEventListener('tap', function(event) {
-					alert("取消活动按钮（功能未实现）");
+					$.ajax(server_url+'/activity/cancel',{
+						data:{
+							userId: user_id,
+							activityId: plus.webview.currentWebview().activity_id
+						},
+						dataType:'json',//服务器返回json格式数据
+						type:'post',//HTTP请求类型
+						timeout:5000,//超时时间设置为5秒；
+						success:function(response){
+							alert("取消活动成功!");
+							mui.fire(list, 'refresh');
+						},
+						error:function(xhr,type,errorThrown){
+							console.log(xhr.status);
+							if(xhr.status==0){
+								alert("网络错误");
+							}
+							else if(xhr.status==500){
+								alert("错误的userId或activityId");
+							}
+							else{
+								alert("未知错误");
+							}
+						},
+					});
 				},false);
 				modify_activity=doc.getElementById("modify_activity");
 				modify_activity.addEventListener('tap', function(event) {

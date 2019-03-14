@@ -39,8 +39,9 @@ public class ControllerLogger {
     
     @AfterReturning(returning = "result", pointcut = "ControllerLog()")
     public void doAfterReturning(Object result) {
-        logService.getLogger()
-                .info("Response: {}", result.toString());
+        if (result != null)
+            logService.getLogger()
+                    .info("Response: {}", result.toString());
     }
     
 }

@@ -31,4 +31,9 @@ public interface ActivityRepository extends JpaRepository<Activity, Long>{
 
 
 	List<Activity> findAllByOrganizerId(Long organizer_id);
+	
+	@Modifying
+	@Transactional
+	@Query("update Activity set activityStatus = 'canceled' where id =?1 and organizerId =?2")
+	void cancelActivity(Long activityId, Long organizerId);
 }
